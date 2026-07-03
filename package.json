@@ -1,5 +1,5 @@
 {
-  "name": "@api-commons/api-governance-mcp",
+  "name": "@api-common/api-governance-mcp",
   "version": "1.0.0",
   "description": "A Model Context Protocol (MCP) server that lints API artifacts (OpenAPI, AsyncAPI, Arazzo, APIs.json, JSON Schema, MCP, …) against a best-of-breed API governance ruleset from any AI client. Powered by Spectral.",
   "type": "module",

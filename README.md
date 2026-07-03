@@ -48,7 +48,7 @@ Add to your client's MCP server config (e.g. Claude Desktop `claude_desktop_conf
   "mcpServers": {
     "api-governance": {
       "command": "npx",
-      "args": ["-y", "@api-commons/api-governance-mcp"]
+      "args": ["-y", "@api-common/api-governance-mcp"]
     }
   }
 }
