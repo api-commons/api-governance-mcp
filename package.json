@@ -1,0 +1,43 @@
+{
+  "name": "@api-commons/api-governance-mcp",
+  "version": "1.0.0",
+  "description": "A Model Context Protocol (MCP) server that lints API artifacts (OpenAPI, AsyncAPI, Arazzo, APIs.json, JSON Schema, MCP, …) against a best-of-breed API governance ruleset from any AI client. Powered by Spectral.",
+  "type": "module",
+  "bin": {
+    "api-governance-mcp": "src/server.mjs"
+  },
+  "files": [
+    "src",
+    "rules",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "start": "node src/server.mjs",
+    "test": "node test/smoke.mjs"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "spectral",
+    "openapi",
+    "asyncapi",
+    "arazzo",
+    "apis.json",
+    "api-governance",
+    "linting"
+  ],
+  "license": "Apache-2.0",
+  "repository": "github:api-commons/api-governance-mcp",
+  "homepage": "https://apicommons.org/tools/",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.0",
+    "@stoplight/spectral-core": "^1.19.0",
+    "@stoplight/spectral-formats": "^1.7.0",
+    "@stoplight/spectral-functions": "^1.9.0",
+    "@stoplight/spectral-parsers": "^1.0.4",
+    "@stoplight/spectral-rulesets": "^1.21.0",
+    "yaml": "^2.6.1",
+    "zod": "^3.23.8"
+  }
+}
