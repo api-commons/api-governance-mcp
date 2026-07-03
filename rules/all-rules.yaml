@@ -190,6 +190,8 @@ openapi:
       - experience:performance
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'document-cache-response-header' (Document Cache Response Header). Requirement: Cache usage SHOULD be extensively detailed in the `description` property to avoid data leaks or the usage of stale data. This rule should ensure in some way that the api provider documented extensively the cache usage to avoid data leaks or usage of stale data. For now this ruleset tests: * the presence of following keywords in the `description`: `max-age`, `private`, `no-store`, `no-cache`. * that one and only one between Expires and Cache-Control is used. `Cache-Control` and `Expires` should not be used in conjuction, because `Cache-Control` overrides `Expires` when `max-age` is set. Instead if neither `Cache-Control` or `Expires` are set, clients MAY use euristic cache like described in RFC7234. To fix: Ensure `description` is present and non-empty at each matching location. Also: Ensure `description` matches the regular expression `.*(max-age|private|no-store|no-cache).*`; rewrite any value that does not. This rule is evaluated at the JSONPath `$.[responses][?(@property[0] == \"2\" )][headers].[?(@property.match(/Cache-Control|Expires/i))]]` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
   document-owasp-api9-server:
+    formats:
+      - oas3
     title: "Document OWASP API9 Server"
     reference: "https://spotlight-rules.com/spec/rules/openapi/document-owasp-api9-server/"
     source: spotlight
@@ -207,6 +209,26 @@ openapi:
       - experience:governance
       - owasp:api9
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'document-owasp-api9-server' (Document OWASP API9 Server). Requirement: The API should declare its servers so all hosts and environments are inventoried — undocumented or stray non-production hosts are a common inventory-management risk (OWASP API9). To fix: Ensure `servers` is present and non-empty at each matching location. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
+  document-owasp-api9-server-oas2:
+    formats:
+      - oas2
+    title: "Document OWASP API9 Server (Swagger 2.0)"
+    reference: "https://spotlight-rules.com/spec/rules/openapi/document-owasp-api9-server/"
+    source: spotlight
+    description: "The API should declare its host so all hosts and environments are inventoried — undocumented or stray non-production hosts are a common inventory-management risk (OWASP API9)."
+    message: "API should declare its host (host/environment inventory)."
+    given: $
+    severity: info
+    then:
+      field: host
+      function: truthy
+    tags:
+      - format:openapi
+      - spec:servers
+      - experience:security
+      - experience:governance
+      - owasp:api9
+    prompt: "You are editing a Swagger 2.0 document to satisfy the Spotlight API governance rule 'document-owasp-api9-server-oas2' (Document OWASP API9 Server (Swagger 2.0)). Requirement: The API should declare its host so all hosts and environments are inventoried. To fix: Ensure `host` is present and non-empty at the document root. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid Swagger 2.0. Return only the complete corrected document, with no commentary."
   document-require-component-section:
     title: "Document Require Component Section"
     reference: "https://spotlight-rules.com/spec/rules/openapi/document-require-component-section/"
@@ -261,6 +283,8 @@ openapi:
       - experience:discoverability
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'document-require-jsonschemadialect' (Document Require Jsonschemadialect). Requirement: openapi document should declare a `jsonSchemaDialect` property. To fix: Ensure `jsonSchemaDialect` is present and non-empty at each matching location. Guidance: Missing `jsonSchemaDialect`. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
   document-require-openapi:
+    formats:
+      - oas3
     title: "Document Require Openapi"
     reference: "https://spotlight-rules.com/spec/rules/openapi/document-require-openapi/"
     source: spotlight
@@ -277,6 +301,25 @@ openapi:
       - experience:governance
       - experience:discoverability
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'document-require-openapi' (Document Require Openapi). Requirement: openapi document should declare a `openapi` property. To fix: Ensure `openapi` is present and non-empty at each matching location. Guidance: Missing `openapi`. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
+  document-require-swagger:
+    formats:
+      - oas2
+    title: "Document Require Swagger (Swagger 2.0)"
+    reference: "https://spotlight-rules.com/spec/rules/openapi/document-require-openapi/"
+    source: spotlight
+    description: "swagger document should declare a `swagger` property."
+    message: "Missing `swagger`."
+    given: $
+    severity: info
+    then:
+      field: swagger
+      function: truthy
+    tags:
+      - format:openapi
+      - spec:document
+      - experience:governance
+      - experience:discoverability
+    prompt: "You are editing a Swagger 2.0 document to satisfy the Spotlight API governance rule 'document-require-swagger' (Document Require Swagger (Swagger 2.0)). Requirement: swagger document should declare a `swagger` property. To fix: Ensure `swagger` is present and non-empty at the document root. Guidance: Missing `swagger`. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid Swagger 2.0. Return only the complete corrected document, with no commentary."
   document-require-path:
     title: "Document Require Path"
     reference: "https://spotlight-rules.com/spec/rules/openapi/document-require-path/"
@@ -314,6 +357,8 @@ openapi:
       - experience:usability
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'document-require-realistic-examples' (Document Require Realistic Examples). Requirement: API design SHOULD include real-like examples for request and response definitions. To fix: Ensure `example` is present and non-empty at each matching location. This rule is evaluated at the JSONPath `$..[?(@.example || @.examples)]` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
   document-require-server-defined:
+    formats:
+      - oas3
     title: "Document Require Server Defined"
     reference: "https://spotlight-rules.com/spec/rules/openapi/document-require-server-defined/"
     source: compiled
@@ -330,7 +375,28 @@ openapi:
       - experience:usability
       - experience:discoverability
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'document-require-server-defined' (Document Require Server Defined). Requirement: Every OpenAPI should define at least one server URL. Analysis shows 97.2% of APIs define servers, providing consumers with the base URL needed to make requests. To fix: Ensure `servers` is present and non-empty at each matching location. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
+  document-require-server-defined-oas2:
+    formats:
+      - oas2
+    title: "Document Require Server Defined (Swagger 2.0)"
+    reference: "https://spotlight-rules.com/spec/rules/openapi/document-require-server-defined/"
+    source: compiled
+    description: "Every Swagger 2.0 API should define a host so consumers have the base URL needed to make requests."
+    message: Host MUST Be Defined
+    severity: info
+    given: $
+    then:
+      field: host
+      function: truthy
+    tags:
+      - format:openapi
+      - spec:document
+      - experience:usability
+      - experience:discoverability
+    prompt: "You are editing a Swagger 2.0 document to satisfy the Spotlight API governance rule 'document-require-server-defined-oas2' (Document Require Server Defined (Swagger 2.0)). Requirement: Every Swagger 2.0 API should define a host. To fix: Ensure `host` is present and non-empty at the document root. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid Swagger 2.0. Return only the complete corrected document, with no commentary."
   document-require-webhooks:
+    formats:
+      - oas3
     title: "Document Require Webhooks"
     reference: "https://spotlight-rules.com/spec/rules/openapi/document-require-webhooks/"
     source: spotlight
@@ -751,6 +817,8 @@ openapi:
       - experience:documentation
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'info-require-license' (Info Require License). Requirement: Having a license defined in the info object clarifies the terms under which the API can be used. Analysis shows only 44.4% of APIs define a license, but it is essential for API governance and compliance. To fix: Ensure `license` is present and non-empty at each matching location. This rule is evaluated at the JSONPath `$.info` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
   info-require-openapi-version-3x:
+    formats:
+      - oas3
     title: "Info Require Openapi Version 3x"
     reference: "https://spotlight-rules.com/spec/rules/openapi/info-require-openapi-version-3x/"
     source: compiled
@@ -769,6 +837,27 @@ openapi:
       - experience:versioning
       - experience:governance
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'info-require-openapi-version-3x' (Info Require Openapi Version 3x). Requirement: APIs should use OpenAPI 3.x specification. Analysis of 773 API specs shows 97% use OpenAPI 3.x, with 86% on 3.1.0, making it the dominant standard for modern API definitions. To fix: Ensure `openapi` matches the regular expression `^3\\.`; rewrite any value that does not. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
+  info-require-openapi-version-3x-oas2:
+    formats:
+      - oas2
+    title: "Info Require Openapi Version 3x (Swagger 2.0)"
+    reference: "https://spotlight-rules.com/spec/rules/openapi/info-require-openapi-version-3x/"
+    source: compiled
+    description: "Swagger 2.0 documents should declare `swagger: \"2.0\"` as their specification version."
+    message: Swagger MUST Be Version 2.0
+    severity: info
+    given: $
+    then:
+      field: swagger
+      function: pattern
+      functionOptions:
+        match: ^2\.
+    tags:
+      - format:openapi
+      - spec:document
+      - experience:versioning
+      - experience:governance
+    prompt: "You are editing a Swagger 2.0 document to satisfy the Spotlight API governance rule 'info-require-openapi-version-3x-oas2' (Info Require Openapi Version 3x (Swagger 2.0)). Requirement: Swagger 2.0 documents should declare swagger version 2.0. To fix: Ensure `swagger` matches the regular expression `^2\\.`; rewrite any value that does not. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid Swagger 2.0. Return only the complete corrected document, with no commentary."
   info-require-summary:
     title: "Info Require Summary"
     reference: "https://spotlight-rules.com/spec/rules/openapi/info-require-summary/"
@@ -1093,6 +1182,8 @@ openapi:
       - experience:security
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'no-script-tags-in-markdown' (No Script Tags In Markdown). Requirement: Markdown descriptions must not have \"<script>\" tags. To fix: Ensure the targeted value does NOT match the regular expression `<script`; rename or rewrite any value that does. This rule is evaluated at the JSONPath `$..[description,title]` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
   oas3_1-callbacks-in-webhook:
+    formats:
+      - oas3
     title: "OAS3.1 Callbacks In Webhook"
     reference: "https://spotlight-rules.com/spec/rules/openapi/oas3_1-callbacks-in-webhook/"
     description: "OAS3.1 Callbacks In Webhook."
@@ -1110,6 +1201,8 @@ openapi:
       - experience:consistency
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'oas3_1-callbacks-in-webhook' (OAS3.1 Callbacks In Webhook). Requirement: OAS3.1 Callbacks In Webhook. To fix: Remove the targeted value from each matching location. This rule is evaluated at the JSONPath `$.webhooks[*][*].callbacks` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
   oas3_1-servers-in-webhook:
+    formats:
+      - oas3
     title: "OAS3.1 Servers In Webhook"
     reference: "https://spotlight-rules.com/spec/rules/openapi/oas3_1-servers-in-webhook/"
     description: "OAS3.1 Servers In Webhook."
@@ -1128,6 +1221,8 @@ openapi:
       - experience:consistency
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'oas3_1-servers-in-webhook' (OAS3.1 Servers In Webhook). Requirement: OAS3.1 Servers In Webhook. To fix: Remove the targeted value from each matching location. This rule is evaluated at the JSONPath `$.webhooks.servers | $.webhooks[*][*].servers` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
   oas3-api-servers:
+    formats:
+      - oas3
     title: "OAS3 API Servers"
     reference: "https://spotlight-rules.com/spec/rules/openapi/oas3-api-servers/"
     source: builtin
@@ -1152,6 +1247,26 @@ openapi:
       - experience:reliability
       - experience:documentation
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'oas3-api-servers' (OAS3 API Servers). Requirement: OpenAPI \"servers\" must be present and non-empty array. To fix: Adjust `servers` so it conforms to the schema this rule requires. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
+  oas3-api-servers-oas2:
+    formats:
+      - oas2
+    title: "OAS3 API Servers (Swagger 2.0)"
+    reference: "https://spotlight-rules.com/spec/rules/openapi/oas3-api-servers/"
+    source: builtin
+    description: "Swagger 2.0 \"host\" must be present so the API base location is defined."
+    message: "Swagger \"host\" must be present."
+    severity: info
+    given: $
+    then:
+      field: host
+      function: truthy
+    tags:
+      - format:openapi
+      - spec:document
+      - experience:usability
+      - experience:reliability
+      - experience:documentation
+    prompt: "You are editing a Swagger 2.0 document to satisfy the Spotlight API governance rule 'oas3-api-servers-oas2' (OAS3 API Servers (Swagger 2.0)). Requirement: Swagger 2.0 \"host\" must be present. To fix: Ensure `host` is present and non-empty at the document root. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid Swagger 2.0. Return only the complete corrected document, with no commentary."
   oas3-callbacks-in-callbacks:
     title: "OAS3 Callbacks In Callbacks"
     reference: "https://spotlight-rules.com/spec/rules/openapi/oas3-callbacks-in-callbacks/"
@@ -1273,7 +1388,29 @@ openapi:
       - experience:reliability
       - experience:usability
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'oas3-server-not-example.com' (OAS3 Server Not Example.com). Requirement: Server URL must not point at example.com. To fix: Ensure the targeted value does NOT match the regular expression `example\\.com`; rename or rewrite any value that does. This rule is evaluated at the JSONPath `$.servers[*].url` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
+  oas3-server-not-example.com-oas2:
+    formats:
+      - oas2
+    title: "OAS3 Server Not Example.com (Swagger 2.0)"
+    reference: "https://spotlight-rules.com/spec/rules/openapi/oas3-server-not-example.com/"
+    source: builtin
+    description: "Host must not point at example.com."
+    message: "Host must not point at example.com."
+    severity: info
+    given: $.host
+    then:
+      function: pattern
+      functionOptions:
+        notMatch: example\.com
+    tags:
+      - format:openapi
+      - spec:servers
+      - experience:reliability
+      - experience:usability
+    prompt: "You are editing a Swagger 2.0 document to satisfy the Spotlight API governance rule 'oas3-server-not-example.com-oas2' (OAS3 Server Not Example.com (Swagger 2.0)). Requirement: Host must not point at example.com. To fix: Ensure `host` does NOT match the regular expression `example\\.com`; rewrite any value that does. This rule is evaluated at the JSONPath `$.host`. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid Swagger 2.0. Return only the complete corrected document, with no commentary."
   oas3-server-trailing-slash:
+    formats:
+      - oas3
     title: "OAS3 Server Trailing Slash"
     reference: "https://spotlight-rules.com/spec/rules/openapi/oas3-server-trailing-slash/"
     source: builtin
@@ -1291,7 +1428,29 @@ openapi:
       - experience:consistency
       - experience:reliability
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'oas3-server-trailing-slash' (OAS3 Server Trailing Slash). Requirement: Server URL must not have trailing slash. To fix: Ensure the targeted value does NOT match the regular expression `./$`; rename or rewrite any value that does. This rule is evaluated at the JSONPath `$.servers[*].url` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
+  oas3-server-trailing-slash-oas2:
+    formats:
+      - oas2
+    title: "OAS3 Server Trailing Slash (Swagger 2.0)"
+    reference: "https://spotlight-rules.com/spec/rules/openapi/oas3-server-trailing-slash/"
+    source: builtin
+    description: "basePath must not have a trailing slash."
+    message: "basePath must not have trailing slash."
+    severity: info
+    given: $.basePath
+    then:
+      function: pattern
+      functionOptions:
+        notMatch: ./$
+    tags:
+      - format:openapi
+      - spec:servers
+      - experience:consistency
+      - experience:reliability
+    prompt: "You are editing a Swagger 2.0 document to satisfy the Spotlight API governance rule 'oas3-server-trailing-slash-oas2' (OAS3 Server Trailing Slash (Swagger 2.0)). Requirement: basePath must not have a trailing slash. To fix: Ensure `basePath` does NOT match the regular expression `./$`; rewrite any value that does. This rule is evaluated at the JSONPath `$.basePath`. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid Swagger 2.0. Return only the complete corrected document, with no commentary."
   oas3-server-variables:
+    formats:
+      - oas3
     title: "OAS3 Server Variables"
     reference: "https://spotlight-rules.com/spec/rules/openapi/oas3-server-variables/"
     source: builtin
@@ -1331,6 +1490,8 @@ openapi:
       - experience:data-modeling
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'oas3-unused-component' (OAS3 Unused Component). Requirement: OAS3 Unused Component. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
   oas3-valid-media-example:
+    formats:
+      - oas3
     title: "OAS3 Valid Media Example"
     reference: "https://spotlight-rules.com/spec/rules/openapi/oas3-valid-media-example/"
     source: builtin
@@ -1358,6 +1519,36 @@ openapi:
       - experience:documentation
       - experience:reliability
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'oas3-valid-media-example' (OAS3 Valid Media Example). Requirement: Examples must be valid against their defined schema. This rule is evaluated at the JSONPath `$..content..[?(@ && @.schema && (@.example !== void 0 || @.examples))] | $..headers..[?(@ && @.schema && (@.example !== void 0 || @.examples))] | $..parameters..[?(@ && @.schema && (@.example !== void 0 || @.examples))]` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
+  oas3-valid-media-example-oas2:
+    formats:
+      - oas2
+    title: "OAS3 Valid Media Example (Swagger 2.0)"
+    reference: "https://spotlight-rules.com/spec/rules/openapi/oas3-valid-media-example/"
+    source: builtin
+    description: "Examples must be valid against their defined schema."
+    message: "{{error}}"
+    severity: info
+    given:
+      - $..definitions..[?(@property !== 'properties' && @ && (@.example !== void 0 || @['x-example'] !== void 0 || @.default !== void 0) && (@.enum || @.type || @.format || @.$ref))]
+      - $..parameters..[?(@property !== 'properties' && @ && (@.example !== void 0 || @['x-example'] !== void 0 || @.default !== void 0) && (@.enum || @.type || @.format || @.$ref))]
+      - $..responses..[?(@property !== 'properties' && @ && (@.example !== void 0 || @['x-example'] !== void 0) && (@.enum || @.type || @.format || @.$ref))]
+    then:
+      function: oasExample
+      functionOptions:
+        schemaField: $
+        oasVersion: 2
+        type: media
+    tags:
+      - format:openapi
+      - spec:parameters
+      - spec:headers
+      - spec:media-types
+      - spec:schemas
+      - spec:examples
+      - experience:data-modeling
+      - experience:documentation
+      - experience:reliability
+    prompt: "You are editing a Swagger 2.0 document to satisfy the Spotlight API governance rule 'oas3-valid-media-example-oas2' (OAS3 Valid Media Example (Swagger 2.0)). Requirement: Examples must be valid against their defined schema. Inspect every definition, parameter and response example and correct only what violates its schema. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid Swagger 2.0. Return only the complete corrected document, with no commentary."
   oas3-valid-schema-example:
     title: "OAS3 Valid Schema Example"
     reference: "https://spotlight-rules.com/spec/rules/openapi/oas3-valid-schema-example/"
@@ -1930,6 +2121,8 @@ openapi:
       - experience:reliability
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'operation-parameters' (Operation Parameters). Requirement: Operation parameters are unique and non-repeating. This rule is evaluated at the JSONPath `#OperationObject.parameters` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
   operation-patch-must-have-request-body:
+    formats:
+      - oas3
     title: "Operation Patch Must Have Request Body"
     reference: "https://spotlight-rules.com/spec/rules/openapi/operation-patch-must-have-request-body/"
     source: compiled
@@ -1950,6 +2143,37 @@ openapi:
       - experience:consistency
       - experience:reliability
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'operation-patch-must-have-request-body' (Operation Patch Must Have Request Body). Requirement: PATCH operations must have a request body. To fix: Adjust `requestBody` so it conforms to the schema this rule requires. This rule is evaluated at the JSONPath `$.paths[*].patch` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
+  operation-patch-must-have-request-body-oas2:
+    formats:
+      - oas2
+    title: "Operation Patch Must Have Request Body (Swagger 2.0)"
+    reference: "https://spotlight-rules.com/spec/rules/openapi/operation-patch-must-have-request-body/"
+    source: compiled
+    description: "PATCH operations must accept a body parameter (a `parameters` entry with `in: body`)."
+    message: "PATCH operations must have a body parameter."
+    severity: info
+    given: $.paths[*].patch
+    then:
+      field: parameters
+      function: schema
+      functionOptions:
+        dialect: draft7
+        schema:
+          type: array
+          contains:
+            type: object
+            required:
+              - in
+            properties:
+              in:
+                const: body
+    tags:
+      - format:openapi
+      - spec:paths
+      - spec:operations
+      - experience:consistency
+      - experience:reliability
+    prompt: "You are editing a Swagger 2.0 document to satisfy the Spotlight API governance rule 'operation-patch-must-have-request-body-oas2' (Operation Patch Must Have Request Body (Swagger 2.0)). Requirement: PATCH operations must accept a body parameter. To fix: Ensure the operation `parameters` array contains an entry with `in: body`. This rule is evaluated at the JSONPath `$.paths[*].patch`. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid Swagger 2.0. Return only the complete corrected document, with no commentary."
   operation-post-not-for-retrieval:
     title: "Operation Post Not For Retrieval"
     reference: "https://spotlight-rules.com/spec/rules/openapi/operation-post-not-for-retrieval/"
@@ -1974,6 +2198,8 @@ openapi:
       - experience:usability
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'operation-post-not-for-retrieval' (Operation Post Not For Retrieval). Requirement: POST requests SHOULD NOT be used for retrieving information. Use GET instead. To fix: Ensure `summary` does NOT match the regular expression `(retrieve|fetch|get|read)`; rename or rewrite any value that does. This rule is evaluated at the JSONPath `$.paths[*].post` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
   operation-post-require-request-body:
+    formats:
+      - oas3
     title: "Operation Post Require Request Body"
     reference: "https://spotlight-rules.com/spec/rules/openapi/operation-post-require-request-body/"
     source: compiled
@@ -1991,6 +2217,39 @@ openapi:
       - experience:data-modeling
       - experience:consistency
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'operation-post-require-request-body' (Operation Post Require Request Body). Requirement: POST HTTP methods can have a request body, providing a structured payload for configuring each API request. To fix: Ensure `requestBody` is present and non-empty at each matching location. This rule is evaluated at the JSONPath `$.paths.*.post` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
+  operation-post-require-request-body-oas2:
+    formats:
+      - oas2
+    title: "Operation Post Require Request Body (Swagger 2.0)"
+    reference: "https://spotlight-rules.com/spec/rules/openapi/operation-post-require-request-body/"
+    source: compiled
+    description: "POST operations can accept a request payload; in Swagger 2.0 this is a `parameters` entry with `in: body` or `in: formData`, providing a structured payload for configuring each API request."
+    message: POST Requests MUST Have a Body Parameter
+    severity: info
+    given: $.paths.*.post
+    then:
+      field: parameters
+      function: schema
+      functionOptions:
+        dialect: draft7
+        schema:
+          type: array
+          contains:
+            type: object
+            required:
+              - in
+            properties:
+              in:
+                enum:
+                  - body
+                  - formData
+    tags:
+      - format:openapi
+      - spec:paths
+      - spec:operations
+      - experience:data-modeling
+      - experience:consistency
+    prompt: "You are editing a Swagger 2.0 document to satisfy the Spotlight API governance rule 'operation-post-require-request-body-oas2' (Operation Post Require Request Body (Swagger 2.0)). Requirement: POST operations should accept a request payload. To fix: Ensure the operation `parameters` array contains an entry with `in: body` or `in: formData`. This rule is evaluated at the JSONPath `$.paths.*.post`. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid Swagger 2.0. Return only the complete corrected document, with no commentary."
   operation-put-require-request-body:
     title: "Operation Put Require Request Body"
     reference: "https://spotlight-rules.com/spec/rules/openapi/operation-put-require-request-body/"
@@ -2538,7 +2797,9 @@ openapi:
     description: "Parameters that are of an array type should always have the items defined, being explicit about what is continued as part of the array."
     message: Parameter Schema Array MUST Have Items
     severity: info
-    given: $.components.parameters.schema[?(@.type=='array')]
+    given:
+      - $.components.parameters.schema[?(@.type=='array')]
+      - $.parameters.schema[?(@.type=='array')]
     then:
       field: items
       function: truthy
@@ -2658,7 +2919,9 @@ openapi:
     source: compiled
     description: "Limiting the length of parameters description forces us to be more concise in how we describe each parameter, while keeping our documentation and other ways descriptions show up in discovery and portals more consistent."
     message: Parameters Description MUST Be Less Than 500 Characters
-    given: $.components.parameters.*
+    given:
+      - $.components.parameters.*
+      - $.parameters.*
     then:
       field: summary
       function: length
@@ -2678,7 +2941,9 @@ openapi:
     description: "Keeping parameters enumerator casing consistent across APIs helps reduce confusion by consumers, and can keep aligned with services and applications putting an API to work."
     message: Parameters Enums MUST Must Be Upper Snake Case
     severity: info
-    given: $.components.parameters.*.enum.*
+    given:
+      - $.components.parameters.*.enum.*
+      - $.parameters.*.enum.*
     then:
       function: pattern
       functionOptions:
@@ -2770,7 +3035,9 @@ openapi:
     source: compiled
     description: "Providing short and concise names for your parameters helps make it easier for API consumers to understand how they are able to configure their API requests."
     message: Parameters Name Length MUST Be Less Than 25 Characters
-    given: $.components.parameters[?(@.in=='path')].name
+    given:
+      - $.components.parameters[?(@.in=='path')].name
+      - $.parameters[?(@.in=='path')].name
     then:
       field: summary
       function: length
@@ -2790,7 +3057,9 @@ openapi:
     description: "Providing parameters with consistent naming helps make it easier for API consumers to understand how they are able to configure their API requests."
     message: Parameters Names MUST Be Camel Case
     severity: info
-    given: $.components.parameters.*
+    given:
+      - $.components.parameters.*
+      - $.parameters.*
     then:
       - field: name
         function: pattern
@@ -3104,7 +3373,9 @@ openapi:
     source: compiled
     description: "Providing an in property for parameters gets explicit about whether a parameter is in the path, query, or a header, making it clear to consumers where they can configure their request."
     message: Parameters In Property MUST Be Set
-    given: $.components.parameters.*
+    given:
+      - $.components.parameters.*
+      - $.parameters.*
     then:
       field: in
       function: truthy
@@ -3122,7 +3393,9 @@ openapi:
     description: "Providing a simple, intuitive, and consistent names for your parameters helps make it easier for API consumers to understand how they are able to configure their API requests."
     message: Parameters MUST Have a Name
     severity: info
-    given: $.components.parameters.*
+    given:
+      - $.components.parameters.*
+      - $.parameters.*
     then:
       field: name
       function: truthy
@@ -3140,7 +3413,9 @@ openapi:
     description: "Providrequiredg an required property for parameters gets explicit about whether a parameter is required the path, query, or a header, making it clear to consumers where they can configure their request."
     message: Parameters Required Property MUST Be Set
     severity: info
-    given: $.components.parameters.*
+    given:
+      - $.components.parameters.*
+      - $.parameters.*
     then:
       field: required
       function: truthy
@@ -3152,6 +3427,8 @@ openapi:
       - experience:documentation
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'parameter-require-required-flag' (Parameter Require Required Flag). Requirement: Providrequiredg an required property for parameters gets explicit about whether a parameter is required the path, query, or a header, making it clear to consumers where they can configure their request. To fix: Ensure `required` is present and non-empty at each matching location. This rule is evaluated at the JSONPath `$.components.parameters.*` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
   parameter-require-schema:
+    formats:
+      - oas3
     title: "Parameter Require Schema"
     reference: "https://spotlight-rules.com/spec/rules/openapi/parameter-require-schema/"
     severity: info
@@ -3169,6 +3446,26 @@ openapi:
       - experience:data-modeling
       - experience:documentation
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'parameter-require-schema' (Parameter Require Schema). Requirement: Parameters must always possess a schema to help define the format and shape of the parameter, setting expections with consumers about what should be passed in. To fix: Ensure `schema` is present and non-empty at each matching location. This rule is evaluated at the JSONPath `$.components.parameters.*` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
+  parameter-require-schema-oas2:
+    formats:
+      - oas2
+    title: "Parameter Require Schema (Swagger 2.0)"
+    reference: "https://spotlight-rules.com/spec/rules/openapi/parameter-require-schema/"
+    severity: info
+    source: compiled
+    description: "In Swagger 2.0 only body parameters carry a `schema`; every reusable `in: body` parameter must possess a schema to define the shape of the payload, setting expectations with consumers about what should be passed in."
+    message: Body Parameters MUST Have Schema
+    given: $.parameters[?(@.in=='body')]
+    then:
+      field: schema
+      function: truthy
+    tags:
+      - format:openapi
+      - spec:parameters
+      - spec:components
+      - experience:data-modeling
+      - experience:documentation
+    prompt: "You are editing a Swagger 2.0 document to satisfy the Spotlight API governance rule 'parameter-require-schema-oas2' (Parameter Require Schema (Swagger 2.0)). Requirement: every reusable body parameter must possess a schema. To fix: Ensure `schema` is present at each `in: body` reusable parameter. This rule is evaluated at the JSONPath `$.parameters[?(@.in=='body')]`. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid Swagger 2.0. Return only the complete corrected document, with no commentary."
   parameter-required-require-examples:
     title: "Parameter Required Require Examples"
     reference: "https://spotlight-rules.com/spec/rules/openapi/parameter-required-require-examples/"
@@ -3195,7 +3492,9 @@ openapi:
     description: "Parameters must always have their schema type defined, being precise about what type of data can be inputted and used to configure an API request."
     message: Parameter Schema Type
     severity: info
-    given: $.components.parameters.*.schema
+    given:
+      - $.components.parameters.*.schema
+      - $.parameters.*.schema
     then:
       field: type
       function: truthy
@@ -3214,7 +3513,9 @@ openapi:
     description: "Parameters must always use a schema reference that utilizes reusable schema that are defined as part of a centralized schema components library."
     message: Parameters MUST Use Schema Reference
     severity: info
-    given: $.components.parameters.*.schema
+    given:
+      - $.components.parameters.*.schema
+      - $.parameters.*.schema
     then:
       field: $ref
       function: falsy
@@ -4082,6 +4383,8 @@ openapi:
       - experience:data-modeling
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'path-write-response-support-json' (Path Write Response Support JSON). Requirement: All APIs returning structured data SHOULD support JSON as the default format. This rule is evaluated at the JSONPath `$.paths.*.` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
   request-body-must-use-json-content-type:
+    formats:
+      - oas3
     title: "Request Body Must Use JSON Content Type"
     reference: "https://spotlight-rules.com/spec/rules/openapi/request-body-must-use-json-content-type/"
     source: compiled
@@ -4101,6 +4404,34 @@ openapi:
       - experience:consistency
       - experience:usability
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'request-body-must-use-json-content-type' (Request Body Must Use JSON Content Type). Requirement: Request bodies should use application/json as the primary content type for consistency across API operations and client implementations. To fix: Ensure `application/json` is present and non-empty at each matching location. This rule is evaluated at the JSONPath `$.paths.*[post,put,patch].requestBody.content` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
+  request-body-must-use-json-content-type-oas2:
+    formats:
+      - oas2
+    title: "Request Body Must Use JSON Content Type (Swagger 2.0)"
+    reference: "https://spotlight-rules.com/spec/rules/openapi/request-body-must-use-json-content-type/"
+    source: compiled
+    description: "Request bodies should be consumed as application/json for consistency across API operations and client implementations. In Swagger 2.0 consumed media types are declared in the operation (or root) `consumes` array."
+    message: Operation `consumes` MUST Include application/json
+    severity: info
+    given: $.paths.*[post,put,patch]
+    then:
+      field: consumes
+      function: schema
+      functionOptions:
+        dialect: draft7
+        schema:
+          type: array
+          contains:
+            const: application/json
+    tags:
+      - format:openapi
+      - spec:paths
+      - spec:operations
+      - spec:request-body
+      - spec:media-types
+      - experience:consistency
+      - experience:usability
+    prompt: "You are editing a Swagger 2.0 document to satisfy the Spotlight API governance rule 'request-body-must-use-json-content-type-oas2' (Request Body Must Use JSON Content Type (Swagger 2.0)). Requirement: request bodies should be consumed as application/json. To fix: Ensure the operation `consumes` array includes `application/json` (or declare it at the root). This rule is evaluated at the JSONPath `$.paths.*[post,put,patch]`. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid Swagger 2.0. Return only the complete corrected document, with no commentary."
   request-content-require-examples:
     title: "Request Content Require Examples"
     reference: "https://spotlight-rules.com/spec/rules/openapi/request-content-require-examples/"
@@ -4123,6 +4454,8 @@ openapi:
       - experience:usability
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'request-content-require-examples' (Request Content Require Examples). Requirement: Request with content must have examples. To fix: Ensure `examples` is present and non-empty at each matching location. This rule is evaluated at the JSONPath `$.paths..requestBody..content.*` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
   request-delete-must-not-have-body:
+    formats:
+      - oas3
     title: "Request Delete Must Not Have Body"
     reference: "https://spotlight-rules.com/spec/rules/openapi/request-delete-must-not-have-body/"
     source: compiled
@@ -4140,6 +4473,26 @@ openapi:
       - experience:consistency
       - experience:reliability
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'request-delete-must-not-have-body' (Request Delete Must Not Have Body). Requirement: DELETE operations must not accept a request body. To fix: Remove the targeted value from each matching location. This rule is evaluated at the JSONPath `$.paths[*].delete.requestBody` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
+  request-delete-must-not-have-body-oas2:
+    formats:
+      - oas2
+    title: "Request Delete Must Not Have Body (Swagger 2.0)"
+    reference: "https://spotlight-rules.com/spec/rules/openapi/request-delete-must-not-have-body/"
+    source: compiled
+    description: "A DELETE operation must not accept a body parameter."
+    message: "DELETE operations must not accept a body parameter."
+    severity: info
+    given: $.paths[*].delete.parameters[?(@.in=='body')]
+    then:
+      function: undefined
+    tags:
+      - format:openapi
+      - spec:paths
+      - spec:operations
+      - spec:request-body
+      - experience:consistency
+      - experience:reliability
+    prompt: "You are editing a Swagger 2.0 document to satisfy the Spotlight API governance rule 'request-delete-must-not-have-body-oas2' (Request Delete Must Not Have Body (Swagger 2.0)). Requirement: DELETE operations must not accept a body parameter. To fix: Remove any `in: body` parameter from DELETE operations. This rule is evaluated at the JSONPath `$.paths[*].delete.parameters[?(@.in=='body')]`. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid Swagger 2.0. Return only the complete corrected document, with no commentary."
   request-delete-no-body:
     title: "Request Delete No Body"
     reference: "https://spotlight-rules.com/spec/rules/openapi/request-delete-no-body/"
@@ -4162,6 +4515,8 @@ openapi:
       - experience:usability
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'request-delete-no-body' (Request Delete No Body). Requirement: DELETE requests MUST NOT have a request body. To fix: Ensure the targeted value is absent or empty (falsy) at each matching location. This rule is evaluated at the JSONPath `$.paths[*].delete.requestBody` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
   request-get-must-not-have-body:
+    formats:
+      - oas3
     title: "Request Get Must Not Have Body"
     reference: "https://spotlight-rules.com/spec/rules/openapi/request-get-must-not-have-body/"
     source: compiled
@@ -4179,6 +4534,26 @@ openapi:
       - experience:consistency
       - experience:reliability
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'request-get-must-not-have-body' (Request Get Must Not Have Body). Requirement: A `GET` request MUST NOT accept a request body. To fix: Remove the targeted value from each matching location. This rule is evaluated at the JSONPath `$.paths[*][get].requestBody` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
+  request-get-must-not-have-body-oas2:
+    formats:
+      - oas2
+    title: "Request Get Must Not Have Body (Swagger 2.0)"
+    reference: "https://spotlight-rules.com/spec/rules/openapi/request-get-must-not-have-body/"
+    source: compiled
+    description: "A `GET` request MUST NOT accept a body parameter."
+    message: "A `GET` request MUST NOT accept a body parameter."
+    severity: info
+    given: $.paths[*][get].parameters[?(@.in=='body')]
+    then:
+      function: undefined
+    tags:
+      - format:openapi
+      - spec:paths
+      - spec:operations
+      - spec:request-body
+      - experience:consistency
+      - experience:reliability
+    prompt: "You are editing a Swagger 2.0 document to satisfy the Spotlight API governance rule 'request-get-must-not-have-body-oas2' (Request Get Must Not Have Body (Swagger 2.0)). Requirement: A `GET` request MUST NOT accept a body parameter. To fix: Remove any `in: body` parameter from GET operations. This rule is evaluated at the JSONPath `$.paths[*][get].parameters[?(@.in=='body')]`. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid Swagger 2.0. Return only the complete corrected document, with no commentary."
   request-get-no-body:
     title: "Request Get No Body"
     reference: "https://spotlight-rules.com/spec/rules/openapi/request-get-no-body/"
@@ -4201,6 +4576,8 @@ openapi:
       - experience:usability
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'request-get-no-body' (Request Get No Body). Requirement: GET requests MUST NOT have a request body. To fix: Ensure the targeted value is absent or empty (falsy) at each matching location. This rule is evaluated at the JSONPath `$.paths[*].get.requestBody` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
   request-head-must-not-have-body:
+    formats:
+      - oas3
     title: "Request Head Must Not Have Body"
     reference: "https://spotlight-rules.com/spec/rules/openapi/request-head-must-not-have-body/"
     source: compiled
@@ -4218,6 +4595,26 @@ openapi:
       - experience:consistency
       - experience:reliability
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'request-head-must-not-have-body' (Request Head Must Not Have Body). Requirement: A `HEAD` request MUST NOT accept a request body. To fix: Remove the targeted value from each matching location. This rule is evaluated at the JSONPath `$.paths[*][head].requestBody` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
+  request-head-must-not-have-body-oas2:
+    formats:
+      - oas2
+    title: "Request Head Must Not Have Body (Swagger 2.0)"
+    reference: "https://spotlight-rules.com/spec/rules/openapi/request-head-must-not-have-body/"
+    source: compiled
+    description: "A `HEAD` request MUST NOT accept a body parameter."
+    message: "A `HEAD` request MUST NOT accept a body parameter."
+    severity: info
+    given: $.paths[*][head].parameters[?(@.in=='body')]
+    then:
+      function: undefined
+    tags:
+      - format:openapi
+      - spec:paths
+      - spec:operations
+      - spec:request-body
+      - experience:consistency
+      - experience:reliability
+    prompt: "You are editing a Swagger 2.0 document to satisfy the Spotlight API governance rule 'request-head-must-not-have-body-oas2' (Request Head Must Not Have Body (Swagger 2.0)). Requirement: A `HEAD` request MUST NOT accept a body parameter. To fix: Remove any `in: body` parameter from HEAD operations. This rule is evaluated at the JSONPath `$.paths[*][head].parameters[?(@.in=='body')]`. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid Swagger 2.0. Return only the complete corrected document, with no commentary."
   request-header-names-pascal-case:
     title: "Request Header Names Pascal Case"
     reference: "https://spotlight-rules.com/spec/rules/openapi/request-header-names-pascal-case/"
@@ -4241,6 +4638,8 @@ openapi:
       - experience:consistency
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'request-header-names-pascal-case' (Request Header Names Pascal Case). Requirement: Headers should be pascal-case. See Italian recommendation RAC_REST_NAME_003. To fix: Rename the targeted key or value to PascalCase (e.g. `UserName`) at each matching location, updating every reference to it. This rule is evaluated at the JSONPath `$.[parameters][?(@.in==\"header\")].name` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
   request-options-must-not-have-body:
+    formats:
+      - oas3
     title: "Request Options Must Not Have Body"
     reference: "https://spotlight-rules.com/spec/rules/openapi/request-options-must-not-have-body/"
     source: compiled
@@ -4258,6 +4657,26 @@ openapi:
       - experience:consistency
       - experience:reliability
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'request-options-must-not-have-body' (Request Options Must Not Have Body). Requirement: An `OPTIONS` request MUST NOT accept a request body. To fix: Remove the targeted value from each matching location. This rule is evaluated at the JSONPath `$.paths[*][options].requestBody` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
+  request-options-must-not-have-body-oas2:
+    formats:
+      - oas2
+    title: "Request Options Must Not Have Body (Swagger 2.0)"
+    reference: "https://spotlight-rules.com/spec/rules/openapi/request-options-must-not-have-body/"
+    source: compiled
+    description: "An `OPTIONS` request MUST NOT accept a body parameter."
+    message: "An `OPTIONS` request MUST NOT accept a body parameter."
+    severity: info
+    given: $.paths[*][options].parameters[?(@.in=='body')]
+    then:
+      function: undefined
+    tags:
+      - format:openapi
+      - spec:paths
+      - spec:operations
+      - spec:request-body
+      - experience:consistency
+      - experience:reliability
+    prompt: "You are editing a Swagger 2.0 document to satisfy the Spotlight API governance rule 'request-options-must-not-have-body-oas2' (Request Options Must Not Have Body (Swagger 2.0)). Requirement: An `OPTIONS` request MUST NOT accept a body parameter. To fix: Remove any `in: body` parameter from OPTIONS operations. This rule is evaluated at the JSONPath `$.paths[*][options].parameters[?(@.in=='body')]`. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid Swagger 2.0. Return only the complete corrected document, with no commentary."
   request-patch-media-type-not-plain-json:
     title: "Request Patch Media Type Not Plain JSON"
     reference: "https://spotlight-rules.com/spec/rules/openapi/request-patch-media-type-not-plain-json/"
@@ -4281,6 +4700,8 @@ openapi:
       - experience:data-modeling
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'request-patch-media-type-not-plain-json' (Request Patch Media Type Not Plain JSON). Requirement: The PATCH specification explicits that the request body contains a \"patch document\" describing the changes to be applied to the target resource. To avoid confusion, [this errata](https://www.rfc-editor.org/errata/eid3169) explains that `application/json` is not an appropriate media-type for `PATCH`. A correct example of PATCH using eg. `application/json-patch+json` media-type defined in RFC6902. ``` paths: /books/{book_id}: patch: requestBody: content: application/json-patch+json: schema: type: object example: [{ \"op\": \"add\", \"path\": \"/baz\", \"value\": \"qux\" }] ```. To fix: Ensure `application/json` is absent or empty (falsy) at each matching location. This rule is evaluated at the JSONPath `$.[patch][requestBody][content]` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
   request-post-collection-require-paging-object:
+    formats:
+      - oas3
     title: "Request Post Collection Require Paging Object"
     reference: "https://spotlight-rules.com/spec/rules/openapi/request-post-collection-require-paging-object/"
     source: compiled
@@ -4305,7 +4726,36 @@ openapi:
       - experience:data-modeling
       - experience:performance
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'request-post-collection-require-paging-object' (Request Post Collection Require Paging Object). Requirement: POST collection endpoints MUST have a request body schema that includes paging parameters. To fix: Ensure `type` matches the regular expression `object`; rewrite any value that does not. This rule is evaluated at the JSONPath `$.paths[?(!@property.match(/.*\\/\\{[^}]+\\}$/))].post.requestBody.content.application/json.schema.properties.paging` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
+  request-post-collection-require-paging-object-oas2:
+    formats:
+      - oas2
+    title: "Request Post Collection Require Paging Object (Swagger 2.0)"
+    reference: "https://spotlight-rules.com/spec/rules/openapi/request-post-collection-require-paging-object/"
+    source: compiled
+    description: "POST collection endpoints MUST have a body-parameter schema that includes paging parameters."
+    message: "POST collection endpoints MUST have a body-parameter schema that includes paging parameters."
+    severity: info
+    given: $.paths[?(!@property.match(/.*\/\{[^}]+\}$/))].post.parameters[?(@.in=='body')].schema.properties.paging
+    then:
+      field: type
+      function: pattern
+      functionOptions:
+        match: object
+    tags:
+      - format:openapi
+      - spec:paths
+      - spec:operations
+      - spec:request-body
+      - spec:media-types
+      - spec:schemas
+      - topic:pagination
+      - experience:pagination
+      - experience:data-modeling
+      - experience:performance
+    prompt: "You are editing a Swagger 2.0 document to satisfy the Spotlight API governance rule 'request-post-collection-require-paging-object-oas2' (Request Post Collection Require Paging Object (Swagger 2.0)). Requirement: POST collection endpoints MUST have a body-parameter schema that includes a paging object. To fix: Ensure the paging property `type` matches `object`. This rule is evaluated at the collection POST body parameter schema. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid Swagger 2.0. Return only the complete corrected document, with no commentary."
   request-property-names-camel-case:
+    formats:
+      - oas3
     title: "Request Property Names Camel Case"
     reference: "https://spotlight-rules.com/spec/rules/openapi/request-property-names-camel-case/"
     source: compiled
@@ -4327,6 +4777,32 @@ openapi:
       - experience:naming
       - experience:consistency
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'request-property-names-camel-case' (Request Property Names Camel Case). Requirement: MUST property names must be ASCII camelCase [118a]. To fix: Ensure the targeted value matches the regular expression `^[a-z]+((\\d)|([A-Z0-9][a-z0-9]+))*([A-Z])?$`; rewrite any value that does not. This rule is evaluated at the JSONPath `$.paths.*.*[responses,requestBody]..content..schema..properties.*~` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
+  request-property-names-camel-case-oas2:
+    formats:
+      - oas2
+    title: "Request Property Names Camel Case (Swagger 2.0)"
+    reference: "https://spotlight-rules.com/spec/rules/openapi/request-property-names-camel-case/"
+    source: compiled
+    description: "MUST property names must be ASCII camelCase [118a]."
+    message: Property name has to be ASCII camelCase
+    severity: info
+    given:
+      - $.paths.*.*.responses..schema..properties.*~
+      - $.paths.*.*.parameters[?(@.in=='body')].schema..properties.*~
+    then:
+      function: pattern
+      functionOptions:
+        match: ^[a-z]+((\d)|([A-Z0-9][a-z0-9]+))*([A-Z])?$
+    tags:
+      - format:openapi
+      - spec:paths
+      - spec:request-body
+      - spec:responses
+      - spec:media-types
+      - spec:schemas
+      - experience:naming
+      - experience:consistency
+    prompt: "You are editing a Swagger 2.0 document to satisfy the Spotlight API governance rule 'request-property-names-camel-case-oas2' (Request Property Names Camel Case (Swagger 2.0)). Requirement: property names must be ASCII camelCase. To fix: Ensure each schema property name in response schemas and body-parameter schemas matches the regular expression `^[a-z]+((\\d)|([A-Z0-9][a-z0-9]+))*([A-Z])?$`. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid Swagger 2.0. Return only the complete corrected document, with no commentary."
   request-support-accept-encoding:
     title: "Request Support Accept Encoding"
     reference: "https://spotlight-rules.com/spec/rules/openapi/request-support-accept-encoding/"
@@ -4683,6 +5159,8 @@ openapi:
       - experience:documentation
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'response-400-require-body' (Response 400 Require Body). Requirement: All 400 responses must include a response body. To fix: Ensure `content` is present and non-empty at each matching location. This rule is evaluated at the JSONPath `$.paths.*.*.responses['400']` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
   response-body-must-be-object:
+    formats:
+      - oas3
     title: "Response Body Must Be Object"
     reference: "https://spotlight-rules.com/spec/rules/openapi/response-body-must-be-object/"
     source: compiled
@@ -4703,6 +5181,29 @@ openapi:
       - experience:data-modeling
       - experience:consistency
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'response-body-must-be-object' (Response Body Must Be Object). Requirement: Response bodies must be an object type. To fix: Ensure the targeted value matches the regular expression `object`; rewrite any value that does not. This rule is evaluated at the JSONPath `$.paths[*][*].responses[*].content.application/json.schema.type` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
+  response-body-must-be-object-oas2:
+    formats:
+      - oas2
+    title: "Response Body Must Be Object (Swagger 2.0)"
+    reference: "https://spotlight-rules.com/spec/rules/openapi/response-body-must-be-object/"
+    source: compiled
+    description: "Response bodies must be an object type."
+    message: "Response bodies must be an object type."
+    severity: info
+    given: $.paths[*][*].responses[*].schema.type
+    then:
+      function: pattern
+      functionOptions:
+        match: object
+    tags:
+      - format:openapi
+      - spec:paths
+      - spec:responses
+      - spec:media-types
+      - spec:schemas
+      - experience:data-modeling
+      - experience:consistency
+    prompt: "You are editing a Swagger 2.0 document to satisfy the Spotlight API governance rule 'response-body-must-be-object-oas2' (Response Body Must Be Object (Swagger 2.0)). Requirement: Response bodies must be an object type. To fix: Ensure the targeted value matches the regular expression `object`; rewrite any value that does not. This rule is evaluated at the JSONPath `$.paths[*][*].responses[*].schema.type`. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid Swagger 2.0. Return only the complete corrected document, with no commentary."
   response-cache-header-no-conflict:
     title: "Response Cache Header No Conflict"
     reference: "https://spotlight-rules.com/spec/rules/openapi/response-cache-header-no-conflict/"
@@ -4746,6 +5247,8 @@ openapi:
       - experience:consistency
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'response-code-must-be-valid' (Response Code Must Be Valid). Requirement: All APIs should return a valid http response code. This rule is evaluated at the JSONPath `$..responses` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
   response-collection-require-results-array:
+    formats:
+      - oas3
     title: "Response Collection Require Results Array"
     reference: "https://spotlight-rules.com/spec/rules/openapi/response-collection-require-results-array/"
     source: compiled
@@ -4774,7 +5277,40 @@ openapi:
       - experience:data-modeling
       - experience:performance
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'response-collection-require-results-array' (Response Collection Require Results Array). Requirement: Response bodies must have a root element called results and is an array of objects. To fix: Ensure `type` matches the regular expression `array`; rewrite any value that does not. Also: Ensure `items.type` matches the regular expression `object`; rewrite any value that does not. This rule is evaluated at the JSONPath `$.paths[?(!@property.match(/.*\\/\\{[^}]+\\}$/))].get.responses['200'].content.application/json.schema.properties.results` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
+  response-collection-require-results-array-oas2:
+    formats:
+      - oas2
+    title: "Response Collection Require Results Array (Swagger 2.0)"
+    reference: "https://spotlight-rules.com/spec/rules/openapi/response-collection-require-results-array/"
+    source: compiled
+    description: "Response bodies must have a root element called results and is an array of objects."
+    message: "Response bodies must have a root element called results and is an array of objects."
+    severity: info
+    given: $.paths[?(!@property.match(/.*\/\{[^}]+\}$/))].get.responses['200'].schema.properties.results
+    then:
+      - field: type
+        function: pattern
+        functionOptions:
+          match: array
+      - field: items.type
+        function: pattern
+        functionOptions:
+          match: object
+    tags:
+      - format:openapi
+      - spec:paths
+      - spec:operations
+      - spec:responses
+      - spec:media-types
+      - spec:schemas
+      - topic:pagination
+      - experience:pagination
+      - experience:data-modeling
+      - experience:performance
+    prompt: "You are editing a Swagger 2.0 document to satisfy the Spotlight API governance rule 'response-collection-require-results-array-oas2' (Response Collection Require Results Array (Swagger 2.0)). Requirement: Response bodies must have a root element called results and is an array of objects. To fix: Ensure `type` matches `array` and `items.type` matches `object`. This rule is evaluated at the collection GET 200 response schema. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid Swagger 2.0. Return only the complete corrected document, with no commentary."
   response-collection-support-paging:
+    formats:
+      - oas3
     title: "Response Collection Support Paging"
     reference: "https://spotlight-rules.com/spec/rules/openapi/response-collection-support-paging/"
     source: compiled
@@ -4805,6 +5341,39 @@ openapi:
       - experience:usability
       - experience:performance
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'response-collection-support-paging' (Response Collection Support Paging). Requirement: Response bodies from collection endpoints SHOULD offer paging capability. To fix: Ensure `paging` is present and non-empty at each matching location. Also: Ensure `paging` matches the regular expression `object`; rewrite any value that does not. Also: Ensure `paging.type` matches the regular expression `object`; rewrite any value that does not. This rule is evaluated at the JSONPath `$.paths[?(!@property.match(/.*\\/\\{[^}]+\\}.*$/))].get.responses['200'].content.application/json.schema.properties` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
+  response-collection-support-paging-oas2:
+    formats:
+      - oas2
+    title: "Response Collection Support Paging (Swagger 2.0)"
+    reference: "https://spotlight-rules.com/spec/rules/openapi/response-collection-support-paging/"
+    source: compiled
+    description: "Response bodies from collection endpoints SHOULD offer paging capability."
+    message: "Response bodies from collection endpoints SHOULD offer paging capability."
+    severity: info
+    given: $.paths[?(!@property.match(/.*\/\{[^}]+\}.*$/))].get.responses['200'].schema.properties
+    then:
+      - field: paging
+        function: truthy
+      - field: paging
+        function: pattern
+        functionOptions:
+          match: object
+      - field: paging.type
+        function: pattern
+        functionOptions:
+          match: object
+    tags:
+      - format:openapi
+      - spec:paths
+      - spec:operations
+      - spec:responses
+      - spec:media-types
+      - spec:schemas
+      - topic:pagination
+      - experience:pagination
+      - experience:usability
+      - experience:performance
+    prompt: "You are editing a Swagger 2.0 document to satisfy the Spotlight API governance rule 'response-collection-support-paging-oas2' (Response Collection Support Paging (Swagger 2.0)). Requirement: Response bodies from collection endpoints SHOULD offer paging capability. To fix: Ensure `paging` is present and is an object. This rule is evaluated at the collection GET 200 response schema properties. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid Swagger 2.0. Return only the complete corrected document, with no commentary."
   response-content-require-examples:
     title: "Response Content Require Examples"
     reference: "https://spotlight-rules.com/spec/rules/openapi/response-content-require-examples/"
@@ -5075,6 +5644,8 @@ openapi:
       - experience:reliability
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'response-delete-define-500' (Response Delete Define 500). Requirement: DELETE responses should have a 500 internal server erorr HTTP status code, communicating the API had a problem to consumers. To fix: Ensure `500` is present and non-empty at each matching location. This rule is evaluated at the JSONPath `$.paths.*.delete.responses` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
   response-delete-must-not-return-body:
+    formats:
+      - oas3
     title: "Response Delete Must Not Return Body"
     reference: "https://spotlight-rules.com/spec/rules/openapi/response-delete-must-not-return-body/"
     source: compiled
@@ -5093,6 +5664,27 @@ openapi:
       - experience:consistency
       - experience:reliability
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'response-delete-must-not-return-body' (Response Delete Must Not Return Body). Requirement: DELETE operations must not have a response body. To fix: Ensure the targeted value is absent or empty (falsy) at each matching location. This rule is evaluated at the JSONPath `$.paths.*.delete.responses[202,204].content` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
+  response-delete-must-not-return-body-oas2:
+    formats:
+      - oas2
+    title: "Response Delete Must Not Return Body (Swagger 2.0)"
+    reference: "https://spotlight-rules.com/spec/rules/openapi/response-delete-must-not-return-body/"
+    source: compiled
+    description: "DELETE operations must not have a response body."
+    message: "DELETE operations must not have a response body."
+    severity: info
+    given: $.paths.*.delete.responses[202,204].schema
+    then:
+      function: falsy
+    tags:
+      - format:openapi
+      - spec:paths
+      - spec:operations
+      - spec:responses
+      - spec:media-types
+      - experience:consistency
+      - experience:reliability
+    prompt: "You are editing a Swagger 2.0 document to satisfy the Spotlight API governance rule 'response-delete-must-not-return-body-oas2' (Response Delete Must Not Return Body (Swagger 2.0)). Requirement: DELETE operations must not have a response body. To fix: Ensure the targeted `schema` is absent at each matching location. This rule is evaluated at the JSONPath `$.paths.*.delete.responses[202,204].schema`. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid Swagger 2.0. Return only the complete corrected document, with no commentary."
   response-delete-require-204:
     title: "Response Delete Require 204"
     reference: "https://spotlight-rules.com/spec/rules/openapi/response-delete-require-204/"
@@ -5285,6 +5877,8 @@ openapi:
       - experience:consistency
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'response-error-use-problem-type' (Response Error Use Problem Type). Requirement: Error management is a key enabler of a resilient API ecosystem. Enforcing a consistent schema for errors between different APIs, enables client to properly implement an error management strategy, with positive impacts for users. Error responses should return one of the media-type defined in RFC7807: - `application/problem+json` - `application/problem+xml` An example of a valid response: ``` responses: \"503\": content: application/problem+json: schema: ... ```. To fix: Set the targeted value to one of the allowed values: application/problem+xml, application/problem+json. This rule is evaluated at the JSONPath `$.paths.[*].responses[?(@property.match(/^(4|5|default)/))].content.*~` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
   response-error-use-problem-type-2:
+    formats:
+      - oas3
     title: "Response Error Use Problem Type 2"
     reference: "https://spotlight-rules.com/spec/rules/openapi/response-error-use-problem-type-2/"
     source: compiled
@@ -5499,6 +6093,8 @@ openapi:
       - experience:consistency
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'response-get-must-return-200' (Response Get Must Return 200). Requirement: GET operations must always return 200 status code. To fix: Ensure `200` is present and non-empty at each matching location. This rule is evaluated at the JSONPath `$.paths[*].get.responses` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
   response-get-must-return-body:
+    formats:
+      - oas3
     title: "Response Get Must Return Body"
     reference: "https://spotlight-rules.com/spec/rules/openapi/response-get-must-return-body/"
     source: compiled
@@ -5517,6 +6113,27 @@ openapi:
       - experience:consistency
       - experience:reliability
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'response-get-must-return-body' (Response Get Must Return Body). Requirement: A `GET` operation must return a response body. To fix: Ensure `content` is present and non-empty at each matching location. This rule is evaluated at the JSONPath `$.paths[*].get.responses[*]` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
+  response-get-must-return-body-oas2:
+    formats:
+      - oas2
+    title: "Response Get Must Return Body (Swagger 2.0)"
+    reference: "https://spotlight-rules.com/spec/rules/openapi/response-get-must-return-body/"
+    source: compiled
+    description: "A `GET` operation must return a response body."
+    message: "A `GET` operation must return a response body."
+    severity: info
+    given: $.paths[*].get.responses[*]
+    then:
+      field: schema
+      function: truthy
+    tags:
+      - format:openapi
+      - spec:paths
+      - spec:operations
+      - spec:responses
+      - experience:consistency
+      - experience:reliability
+    prompt: "You are editing a Swagger 2.0 document to satisfy the Spotlight API governance rule 'response-get-must-return-body-oas2' (Response Get Must Return Body (Swagger 2.0)). Requirement: A `GET` operation must return a response body. To fix: Ensure `schema` is present at each GET response. This rule is evaluated at the JSONPath `$.paths[*].get.responses[*]`. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid Swagger 2.0. Return only the complete corrected document, with no commentary."
   response-get-vary:
     title: "Response Get Vary"
     reference: "https://spotlight-rules.com/spec/rules/openapi/response-get-vary/"
@@ -5558,6 +6175,8 @@ openapi:
       - experience:consistency
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'response-head-codes-allowed' (Response Head Codes Allowed). Requirement: HEAD operations should not return 201, 202, 204, 409, 412 status codes. To fix: Ensure `@key` does NOT match the regular expression `^(201|202|204|409|412)$`; rename or rewrite any value that does. This rule is evaluated at the JSONPath `$.paths[*].head.responses` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
   response-head-must-not-return-body:
+    formats:
+      - oas3
     title: "Response Head Must Not Return Body"
     reference: "https://spotlight-rules.com/spec/rules/openapi/response-head-must-not-return-body/"
     source: compiled
@@ -5576,6 +6195,27 @@ openapi:
       - experience:consistency
       - experience:reliability
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'response-head-must-not-return-body' (Response Head Must Not Return Body). Requirement: HEAD operations should not return a response body for success. To fix: Ensure the targeted value is absent or empty (falsy) at each matching location. This rule is evaluated at the JSONPath `$.paths.*.head.responses[200].content` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
+  response-head-must-not-return-body-oas2:
+    formats:
+      - oas2
+    title: "Response Head Must Not Return Body (Swagger 2.0)"
+    reference: "https://spotlight-rules.com/spec/rules/openapi/response-head-must-not-return-body/"
+    source: compiled
+    description: "HEAD operations should not return a response body for success."
+    message: "HEAD operations should not return a response body for success."
+    severity: info
+    given: $.paths.*.head.responses[200].schema
+    then:
+      function: falsy
+    tags:
+      - format:openapi
+      - spec:paths
+      - spec:operations
+      - spec:responses
+      - spec:media-types
+      - experience:consistency
+      - experience:reliability
+    prompt: "You are editing a Swagger 2.0 document to satisfy the Spotlight API governance rule 'response-head-must-not-return-body-oas2' (Response Head Must Not Return Body (Swagger 2.0)). Requirement: HEAD operations should not return a response body for success. To fix: Ensure the targeted `schema` is absent. This rule is evaluated at the JSONPath `$.paths.*.head.responses[200].schema`. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid Swagger 2.0. Return only the complete corrected document, with no commentary."
   response-header-names-pascal-case:
     title: "Response Header Names Pascal Case"
     reference: "https://spotlight-rules.com/spec/rules/openapi/response-header-names-pascal-case/"
@@ -5699,6 +6339,8 @@ openapi:
       - experience:error-handling
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'response-location-header-only-on-201' (Response Location Header Only On 201). Requirement: Location header MUST NOT be present in non-201 responses. To fix: Ensure `Location` is absent or empty (falsy) at each matching location. This rule is evaluated at the JSONPath `$.paths[*][*].responses[?(@property !== '201')].headers` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
   response-must-use-json-content-type:
+    formats:
+      - oas3
     title: "Response Must Use JSON Content Type"
     reference: "https://spotlight-rules.com/spec/rules/openapi/response-must-use-json-content-type/"
     source: compiled
@@ -5718,6 +6360,34 @@ openapi:
       - experience:consistency
       - experience:usability
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'response-must-use-json-content-type' (Response Must Use JSON Content Type). Requirement: API responses should use application/json as the primary content type. Analysis of 773 specs shows application/json is used by 92% of APIs, making it the universal standard for modern REST APIs. To fix: Ensure `application/json` is present and non-empty at each matching location. This rule is evaluated at the JSONPath `$.paths.*[get,post,put,patch,delete].responses[*].content` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
+  response-must-use-json-content-type-oas2:
+    formats:
+      - oas2
+    title: "Response Must Use JSON Content Type (Swagger 2.0)"
+    reference: "https://spotlight-rules.com/spec/rules/openapi/response-must-use-json-content-type/"
+    source: compiled
+    description: "API responses should offer application/json as a produced content type. In Swagger 2.0 produced media types are declared in the operation (or root) `produces` array."
+    message: Operation `produces` MUST Include application/json
+    severity: info
+    given: $.paths.*[get,post,put,patch,delete]
+    then:
+      field: produces
+      function: schema
+      functionOptions:
+        dialect: draft7
+        schema:
+          type: array
+          contains:
+            const: application/json
+    tags:
+      - format:openapi
+      - spec:paths
+      - spec:operations
+      - spec:responses
+      - spec:media-types
+      - experience:consistency
+      - experience:usability
+    prompt: "You are editing a Swagger 2.0 document to satisfy the Spotlight API governance rule 'response-must-use-json-content-type-oas2' (Response Must Use JSON Content Type (Swagger 2.0)). Requirement: Responses should offer application/json. To fix: Ensure the operation `produces` array includes `application/json` (or declare it at the root). This rule is evaluated at the JSONPath `$.paths.*[get,post,put,patch,delete]`. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid Swagger 2.0. Return only the complete corrected document, with no commentary."
   response-names-pascal-case:
     title: "Response Names Pascal Case"
     reference: "https://spotlight-rules.com/spec/rules/openapi/response-names-pascal-case/"
@@ -5725,7 +6395,9 @@ openapi:
     description: "Response names SHOULD be written in PascalCase."
     message: "{{property}} is not PascalCase: {{error}}"
     severity: info
-    given: $.components.responses.*~
+    given:
+      - $.components.responses.*~
+      - $.responses.*~
     then:
       function: pattern
       functionOptions:
@@ -5800,6 +6472,8 @@ openapi:
       - experience:consistency
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'response-options-codes-allowed' (Response Options Codes Allowed). Requirement: OPTIONS operations should not return 201, 202, 409, 412 status codes. To fix: Ensure `@key` does NOT match the regular expression `^(201|202|409|412)$`; rename or rewrite any value that does. This rule is evaluated at the JSONPath `$.paths[*].options.responses` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
   response-options-must-not-return-body:
+    formats:
+      - oas3
     title: "Response Options Must Not Return Body"
     reference: "https://spotlight-rules.com/spec/rules/openapi/response-options-must-not-return-body/"
     source: compiled
@@ -5818,6 +6492,27 @@ openapi:
       - experience:consistency
       - experience:reliability
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'response-options-must-not-return-body' (Response Options Must Not Return Body). Requirement: OPTIONS operations should not return a response body for success. To fix: Ensure the targeted value is absent or empty (falsy) at each matching location. This rule is evaluated at the JSONPath `$.paths.*.options.responses[200, 204].content` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
+  response-options-must-not-return-body-oas2:
+    formats:
+      - oas2
+    title: "Response Options Must Not Return Body (Swagger 2.0)"
+    reference: "https://spotlight-rules.com/spec/rules/openapi/response-options-must-not-return-body/"
+    source: compiled
+    description: "OPTIONS operations should not return a response body for success."
+    message: "OPTIONS operations should not return a response body for success."
+    severity: info
+    given: $.paths.*.options.responses[200, 204].schema
+    then:
+      function: falsy
+    tags:
+      - format:openapi
+      - spec:paths
+      - spec:operations
+      - spec:responses
+      - spec:media-types
+      - experience:consistency
+      - experience:reliability
+    prompt: "You are editing a Swagger 2.0 document to satisfy the Spotlight API governance rule 'response-options-must-not-return-body-oas2' (Response Options Must Not Return Body (Swagger 2.0)). Requirement: OPTIONS operations should not return a response body for success. To fix: Ensure the targeted `schema` is absent. This rule is evaluated at the JSONPath `$.paths.*.options.responses[200, 204].schema`. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid Swagger 2.0. Return only the complete corrected document, with no commentary."
   response-owasp-api3-define-error-validation:
     title: "Response OWASP API3 Define Error Validation"
     reference: "https://spotlight-rules.com/spec/rules/openapi/response-owasp-api3-define-error-validation/"
@@ -6251,6 +6946,8 @@ openapi:
       - experience:observability
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'response-return-correlation-id' (Response Return Correlation ID). Requirement: Responses should return a correlation / request ID header (e.g. Request-Id or X-Correlation-Id) so callers can correlate a response with their request and with server-side logs. To fix: Adjust `headers` so it conforms to the schema this rule requires. This rule is evaluated at the JSONPath `$..responses.*` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
   response-status-path-problem-schema-fields:
+    formats:
+      - oas3
     title: "Response Status Path Problem Schema Fields"
     reference: "https://spotlight-rules.com/spec/rules/openapi/response-status-path-problem-schema-fields/"
     source: compiled
@@ -6275,7 +6972,36 @@ openapi:
       - experience:error-handling
       - experience:reliability
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'response-status-path-problem-schema-fields' (Response Status Path Problem Schema Fields). Requirement: \"/status\" schema is not a Problem object. To fix: Ensure `properties.status` is present and non-empty at each matching location. Also: Ensure `properties.title` is present and non-empty at each matching location. Also: Ensure `properties.detail` is present and non-empty at each matching location. This rule is evaluated at the JSONPath `$.paths.'/status'.get.responses.200.content.[[schema]]` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
+  response-status-path-problem-schema-fields-oas2:
+    formats:
+      - oas2
+    title: "Response Status Path Problem Schema Fields (Swagger 2.0)"
+    reference: "https://spotlight-rules.com/spec/rules/openapi/response-status-path-problem-schema-fields/"
+    source: compiled
+    description: "\"/status\" schema is not a Problem object."
+    message: "{{error}} {{path}}"
+    severity: info
+    given: $.paths.'/status'.get.responses.200.schema
+    then:
+      - function: truthy
+        field: properties.status
+      - function: truthy
+        field: properties.title
+      - function: truthy
+        field: properties.detail
+    tags:
+      - format:openapi
+      - spec:paths
+      - spec:operations
+      - spec:responses
+      - spec:media-types
+      - spec:schemas
+      - experience:error-handling
+      - experience:reliability
+    prompt: "You are editing a Swagger 2.0 document to satisfy the Spotlight API governance rule 'response-status-path-problem-schema-fields-oas2' (Response Status Path Problem Schema Fields (Swagger 2.0)). Requirement: the /status response schema must be a Problem object. To fix: Ensure `properties.status`, `properties.title` and `properties.detail` are present. This rule is evaluated at the JSONPath `$.paths.'/status'.get.responses.200.schema`. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid Swagger 2.0. Return only the complete corrected document, with no commentary."
   response-status-path-return-problem-type:
+    formats:
+      - oas3
     title: "Response Status Path Return Problem Type"
     reference: "https://spotlight-rules.com/spec/rules/openapi/response-status-path-return-problem-type/"
     source: compiled
@@ -6298,6 +7024,31 @@ openapi:
       - experience:error-handling
       - experience:reliability
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'response-status-path-return-problem-type' (Response Status Path Return Problem Type). Requirement: \"/status\" must return a Problem object. To fix: Set the targeted value to one of the allowed values: application/problem+xml, application/problem+json. This rule is evaluated at the JSONPath `$.paths.'/status'.get.responses.200.content.*~` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
+  response-status-path-return-problem-type-oas2:
+    formats:
+      - oas2
+    title: "Response Status Path Return Problem Type (Swagger 2.0)"
+    reference: "https://spotlight-rules.com/spec/rules/openapi/response-status-path-return-problem-type/"
+    source: compiled
+    description: "\"/status\" must be produced as a Problem media type."
+    message: "{{error}}"
+    severity: info
+    given: $.paths.'/status'.get.produces[*]
+    then:
+      function: enumeration
+      functionOptions:
+        values:
+          - application/problem+xml
+          - application/problem+json
+    tags:
+      - format:openapi
+      - spec:paths
+      - spec:operations
+      - spec:responses
+      - spec:media-types
+      - experience:error-handling
+      - experience:reliability
+    prompt: "You are editing a Swagger 2.0 document to satisfy the Spotlight API governance rule 'response-status-path-return-problem-type-oas2' (Response Status Path Return Problem Type (Swagger 2.0)). Requirement: /status must be produced as a Problem media type. To fix: Ensure the /status GET `produces` values are one of application/problem+xml, application/problem+json. This rule is evaluated at the JSONPath `$.paths.'/status'.get.produces[*]`. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid Swagger 2.0. Return only the complete corrected document, with no commentary."
   response-success-require-ratelimit-header:
     title: "Response Success Require Ratelimit Header"
     reference: "https://spotlight-rules.com/spec/rules/openapi/response-success-require-ratelimit-header/"
@@ -6404,6 +7155,8 @@ openapi:
       - experience:data-modeling
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'response-use-json-api' (Response Use JSON API). Requirement: All responses MUST use the JSON:API `application/vnd.api+json` media type. To fix: Set the targeted value to one of the allowed values: application/vnd.api+json. This rule is evaluated at the JSONPath `$.paths..responses[?( @property >= 200 && @property < 600 && @property != 204)].content[*]~` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
   response-use-standard-mime-types:
+    formats:
+      - oas3
     title: "Response Use Standard Mime Types"
     reference: "https://spotlight-rules.com/spec/rules/openapi/response-use-standard-mime-types/"
     source: compiled
@@ -6423,6 +7176,28 @@ openapi:
       - experience:consistency
       - experience:data-modeling
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'response-use-standard-mime-types' (Response Use Standard Mime Types). Requirement: MIME types MUST be standard (application/json, application/problem+json, application/problem+xml) or use custom format application/vnd.*. To fix: Ensure the targeted value matches the regular expression `^application/(json|problem\\+json|problem\\+xml|vnd\\..*)$`; rewrite any value that does not. This rule is evaluated at the JSONPath `$.paths[*][*].responses[*].content.*~` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
+  response-use-standard-mime-types-oas2:
+    formats:
+      - oas2
+    title: "Response Use Standard Mime Types (Swagger 2.0)"
+    reference: "https://spotlight-rules.com/spec/rules/openapi/response-use-standard-mime-types/"
+    source: compiled
+    description: "Produced MIME types MUST be standard (application/json, application/problem+json, application/problem+xml) or use custom format application/vnd.*."
+    message: "MIME types MUST be standard (application/json, application/problem+json, application/problem+xml) or use custom format application/vnd.*."
+    severity: info
+    given: $.paths[*][*].produces[*]
+    then:
+      function: pattern
+      functionOptions:
+        match: ^application/(json|problem\+json|problem\+xml|vnd\..*)$
+    tags:
+      - format:openapi
+      - spec:paths
+      - spec:responses
+      - spec:media-types
+      - experience:consistency
+      - experience:data-modeling
+    prompt: "You are editing a Swagger 2.0 document to satisfy the Spotlight API governance rule 'response-use-standard-mime-types-oas2' (Response Use Standard Mime Types (Swagger 2.0)). Requirement: produced MIME types MUST be standard or application/vnd.*. To fix: Ensure each operation `produces` value matches the regular expression `^application/(json|problem\\+json|problem\\+xml|vnd\\..*)$`. This rule is evaluated at the JSONPath `$.paths[*][*].produces[*]`. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid Swagger 2.0. Return only the complete corrected document, with no commentary."
   response-use-standard-status-codes:
     title: "Response Use Standard Status Codes"
     reference: "https://spotlight-rules.com/spec/rules/openapi/response-use-standard-status-codes/"
@@ -6590,7 +7365,9 @@ openapi:
     description: "Schema properties that are of the type array must have an items property defined."
     message: Schema Array Properties MUST Have Items
     severity: info
-    given: $.components.schemas.*.properties[?(@.type=="array")]
+    given:
+      - $.components.schemas.*.properties[?(@.type=="array")]
+      - $.definitions.*.properties[?(@.type=="array")]
     then:
       field: items
       function: truthy
@@ -6608,7 +7385,9 @@ openapi:
     description: "Schema properties that are of the type array should have a max items property defined."
     message: Schema Array Properties MUST Have Max Items
     severity: info
-    given: $.components.schemas.*.properties[?(@.type=="array")]
+    given:
+      - $.components.schemas.*.properties[?(@.type=="array")]
+      - $.definitions.*.properties[?(@.type=="array")]
     then:
       - field: maxItems
         function: truthy
@@ -6627,7 +7406,9 @@ openapi:
     description: "Schema properties that are of the type array should have a min items property defined."
     message: Schema Array Properties MUST Have Min Items
     severity: info
-    given: $.components.schemas.*.properties[?(@.type=="array")]
+    given:
+      - $.components.schemas.*.properties[?(@.type=="array")]
+      - $.definitions.*.properties[?(@.type=="array")]
     then:
       - field: minItems
         function: truthy
@@ -6816,6 +7597,8 @@ openapi:
       - experience:consistency
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'schema-date-time-property-require-format' (Schema Date Time Property Require Format). Requirement: Date/time string properties (createdAt, updated_at, *_date, timestamp, …) should declare a format such as date-time (RFC 3339) so the value is unambiguous and machine-validatable. To fix: Ensure `format` is present and non-empty at each matching location. This rule is evaluated at the JSONPath `$..properties[?( @property.match(/(_at$|_date$|_time$|At$|Date$|Time$|timestamp)/i) && @.type == 'string' )]` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
   schema-definition-camel-case:
+    formats:
+      - oas2
     title: "Schema Definition Camel Case"
     reference: "https://spotlight-rules.com/spec/rules/openapi/schema-definition-camel-case/"
     source: default
@@ -6834,6 +7617,8 @@ openapi:
       - experience:consistency
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'schema-definition-camel-case' (Schema Definition Camel Case). Requirement: Schema definitions MUST follow camelCase. To fix: Ensure the targeted value matches the regular expression `^[a-z][a-zA-Z0-9]*$`; rewrite any value that does not. This rule is evaluated at the JSONPath `$.definitions[*]~` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
   schema-definition-constant-case:
+    formats:
+      - oas2
     title: "Schema Definition Constant Case"
     reference: "https://spotlight-rules.com/spec/rules/openapi/schema-definition-constant-case/"
     source: default
@@ -6852,6 +7637,8 @@ openapi:
       - experience:consistency
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'schema-definition-constant-case' (Schema Definition Constant Case). Requirement: Schema definitions MUST follow CONSTANT_CASE (screaming snake_case). To fix: Ensure the targeted value matches the regular expression `^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$`; rewrite any value that does not. This rule is evaluated at the JSONPath `$.definitions[*]~` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
   schema-definition-kebab-case:
+    formats:
+      - oas2
     title: "Schema Definition Kebab Case"
     reference: "https://spotlight-rules.com/spec/rules/openapi/schema-definition-kebab-case/"
     source: default
@@ -6870,6 +7657,8 @@ openapi:
       - experience:consistency
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'schema-definition-kebab-case' (Schema Definition Kebab Case). Requirement: Schema definitions MUST follow kebab-case. To fix: Ensure the targeted value matches the regular expression `^[a-z][a-z0-9]*(-[a-z0-9]+)*$`; rewrite any value that does not. This rule is evaluated at the JSONPath `$.definitions[*]~` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
   schema-definition-pascal-case:
+    formats:
+      - oas2
     title: "Schema Definition Pascal Case"
     reference: "https://spotlight-rules.com/spec/rules/openapi/schema-definition-pascal-case/"
     source: default
@@ -6888,6 +7677,8 @@ openapi:
       - experience:consistency
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'schema-definition-pascal-case' (Schema Definition Pascal Case). Requirement: Schema definitions MUST follow PascalCase. To fix: Ensure the targeted value matches the regular expression `^[A-Z][a-zA-Z0-9]*$`; rewrite any value that does not. This rule is evaluated at the JSONPath `$.definitions[*]~` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
   schema-definition-snake-case:
+    formats:
+      - oas2
     title: "Schema Definition Snake Case"
     reference: "https://spotlight-rules.com/spec/rules/openapi/schema-definition-snake-case/"
     source: default
@@ -6950,7 +7741,9 @@ openapi:
     description: "Schema should have a length limit applied, restricting how long schema descriptions can be, helping keep them concise and consistent."
     message: Schema Description MUST be Less Than 250 Characters
     severity: info
-    given: $.components.schemas.*
+    given:
+      - $.components.schemas.*
+      - $.definitions.*
     then:
       field: description
       function: length
@@ -7196,7 +7989,9 @@ openapi:
     description: "Schema should have a length limit applied keeping the names of schema consistent across APIs."
     message: Schema Names MUST Be Less Than 25 Characters
     severity: info
-    given: $.components.schemas
+    given:
+      - $.components.schemas
+      - $.definitions
     then:
       field: "@key"
       function: length
@@ -7236,7 +8031,9 @@ openapi:
     description: "Schema names SHOULD be written in PascalCase."
     message: "{{property}} is not PascalCase: {{error}}"
     severity: info
-    given: $.components.schemas.*~
+    given:
+      - $.components.schemas.*~
+      - $.definitions.*~
     then:
       function: pattern
       functionOptions:
@@ -7282,7 +8079,9 @@ openapi:
     description: "Schema properties that are of the type number should have a maximum property defined."
     message: Schema Number Properties MUST Have Maximum
     severity: info
-    given: $.components.schemas.*.properties[?(@.type=="number")]
+    given:
+      - $.components.schemas.*.properties[?(@.type=="number")]
+      - $.definitions.*.properties[?(@.type=="number")]
     then:
       - field: maximum
         function: defined
@@ -7301,7 +8100,9 @@ openapi:
     description: "Schema properties that are of the type number should have a minimum property defined."
     message: Schema Number Properties MUST Have Minimum
     severity: info
-    given: $.components.schemas.*.properties[?(@.type=="number")]
+    given:
+      - $.components.schemas.*.properties[?(@.type=="number")]
+      - $.definitions.*.properties[?(@.type=="number")]
     then:
       - field: minimum
         function: defined
@@ -7456,6 +8257,8 @@ openapi:
       - owasp:api4
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'schema-owasp-api4-integer-format' (Schema OWASP API4 Integer Format). Requirement: Integer properties should declare a format (int32 / int64) so their range is bounded (OWASP API4 — unrestricted resource consumption). To fix: Ensure `format` is present and non-empty at each matching location. This rule is evaluated at the JSONPath `$..properties[?(@ && @.type == 'integer')]` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
   schema-property-camel-case:
+    formats:
+      - oas2
     title: "Schema Property Camel Case"
     reference: "https://spotlight-rules.com/spec/rules/openapi/schema-property-camel-case/"
     source: default
@@ -7480,7 +8283,9 @@ openapi:
     description: "Schema property names should use camelCase. Analysis of 773 specs shows camelCase is the dominant convention at 65% (12958 properties), followed by snake_case at 33% (6661 properties)."
     message: Schema Properties MUST Use camelCase
     severity: info
-    given: $.components.schemas[*].properties
+    given:
+      - $.components.schemas[*].properties
+      - $.definitions[*].properties
     then:
       function: pattern
       functionOptions:
@@ -7493,6 +8298,8 @@ openapi:
       - experience:consistency
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'schema-property-camel-case-3' (Schema Property Camel Case 3). Requirement: Schema property names should use camelCase. Analysis of 773 specs shows camelCase is the dominant convention at 65% (12958 properties), followed by snake_case at 33% (6661 properties). To fix: Ensure the targeted value matches the regular expression `^[a-z][a-zA-Z0-9]*$`; rewrite any value that does not. This rule is evaluated at the JSONPath `$.components.schemas[*].properties` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
   schema-property-constant-case:
+    formats:
+      - oas2
     title: "Schema Property Constant Case"
     reference: "https://spotlight-rules.com/spec/rules/openapi/schema-property-constant-case/"
     source: default
@@ -7517,7 +8324,9 @@ openapi:
     description: "Schema property descriptions should have a length limit applied, applying constraints to writing descriptions, and keeping consistent across APIs."
     message: Schema Properties Description MUST Have 250 Characters
     severity: info
-    given: $.components.schemas.*.properties[?(@.type == 'string')]
+    given:
+      - $.components.schemas.*.properties[?(@.type == 'string')]
+      - $.definitions.*.properties[?(@.type == 'string')]
     then:
       field: description
       function: length
@@ -7537,7 +8346,9 @@ openapi:
     description: "Schema property enumerators are consistent casing, keeping all entries upper snake case, and consistent across all APIs."
     message: Schema Property Enum MUST Be Upper Snake Case
     severity: info
-    given: $.components.schemas.*.properties.*.enum.*
+    given:
+      - $.components.schemas.*.properties.*.enum.*
+      - $.definitions.*.properties.*.enum.*
     then:
       function: pattern
       functionOptions:
@@ -7550,6 +8361,8 @@ openapi:
       - experience:consistency
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'schema-property-enum-upper-snake-case' (Schema Property Enum Upper Snake Case). Requirement: Schema property enumerators are consistent casing, keeping all entries upper snake case, and consistent across all APIs. To fix: Ensure the targeted value matches the regular expression `^[A-Z]+(?:_[A-Z]+)*$`; rewrite any value that does not. This rule is evaluated at the JSONPath `$.components.schemas.*.properties.*.enum.*` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
   schema-property-kebab-case:
+    formats:
+      - oas2
     title: "Schema Property Kebab Case"
     reference: "https://spotlight-rules.com/spec/rules/openapi/schema-property-kebab-case/"
     source: default
@@ -7574,7 +8387,9 @@ openapi:
     description: "Schema property names are camel case, providing consistent casing across all the schema properties used by APIs."
     message: Schema Property Names MUST Be camelCase.
     severity: info
-    given: $.components.schemas.*.properties
+    given:
+      - $.components.schemas.*.properties
+      - $.definitions.*.properties
     then:
       - field: "@key"
         function: pattern
@@ -7614,7 +8429,9 @@ openapi:
     description: "Schema property names have a length restriction applied, keeping names consistent, and avoiding being too long."
     message: Schema Properties Name Length
     severity: info
-    given: $.components.schemas.*.properties
+    given:
+      - $.components.schemas.*.properties
+      - $.definitions.*.properties
     then:
       field: "@key"
       function: length
@@ -7666,6 +8483,8 @@ openapi:
       - experience:consistency
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'schema-property-no-prepositions' (Schema Property No Prepositions). Requirement: Property names SHOULD NOT include prepositions (e.g. \"for\", \"during\", \"at\", etc.). To fix: Ensure the targeted value does NOT match the regular expression `(^(about|above|across|after|against|among|around|at|before|behind|below|beside|between|down|during|for|from|in|inside|into|near|of|off|on|out|over|through|to|toward|under|up|with|as|but|like|since|than|till|unlike|until|upon|within|without)([A-Z]|$)|.*(About|Above|Across|After|Against|Among|Around|At|Before|Behind|Below|Beside|Between|Down|During|For|From|In|Inside|Into|Near|Of|Off|On|Out|Over|Through|To|Toward|Under|Up|With|As|But|Like|Since|Than|Till|Unlike|Until|Upon|Within|Without)([A-Z]|$)).*`; rename or rewrite any value that does. This rule is evaluated at the JSONPath `$..properties.*~` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
   schema-property-pascal-case:
+    formats:
+      - oas2
     title: "Schema Property Pascal Case"
     reference: "https://spotlight-rules.com/spec/rules/openapi/schema-property-pascal-case/"
     source: default
@@ -7690,7 +8509,9 @@ openapi:
     description: "Schema properties should have descriptions that provide a narrative of the property contains, and how it can be used."
     message: Schema Properties MUST Have Description
     severity: info
-    given: $.components.schemas.*.properties[?(@.type == 'string')]
+    given:
+      - $.components.schemas.*.properties[?(@.type == 'string')]
+      - $.definitions.*.properties[?(@.type == 'string')]
     then:
       field: description
       function: truthy
@@ -7734,6 +8555,8 @@ openapi:
       - experience:consistency
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'schema-property-require-type' (Schema Property Require Type). Requirement: Schema properties must have a type defined. This rule is evaluated at the JSONPath `$..properties.*` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
   schema-property-snake-case:
+    formats:
+      - oas2
     title: "Schema Property Snake Case"
     reference: "https://spotlight-rules.com/spec/rules/openapi/schema-property-snake-case/"
     source: default
@@ -7870,7 +8693,9 @@ openapi:
     description: "Schema should have descriptions that provide a narrative of what a schema object is for, and how it can be used, leaving examples to demonstrate what can actually be expected."
     message: Schema MUST Have a Description.
     severity: info
-    given: $.components.schemas.*
+    given:
+      - $.components.schemas.*
+      - $.definitions.*
     then:
       field: description
       function: truthy
@@ -7905,7 +8730,9 @@ openapi:
     description: "Schema names, keeping the naming of them consistent across APIs, standardizing how consumers can use in their applications."
     message: Schema Names MUST Exist
     severity: info
-    given: $.components.schemas
+    given:
+      - $.components.schemas
+      - $.definitions
     then:
       field: "@key"
       function: truthy
@@ -7940,7 +8767,9 @@ openapi:
     description: "Schema should have a type defined, being explicit about type of data a schema describes and can be used to validate, helping standardize the type of data being made available."
     message: Schema MUST Have Type Property
     severity: info
-    given: $.components.schemas.*
+    given:
+      - $.components.schemas.*
+      - $.definitions.*
     then:
       field: type
       function: truthy
@@ -7958,7 +8787,9 @@ openapi:
     description: "Schema properties that are of the string type have the max length applied defining the shape of the property."
     message: Schema String Properties MUST Have Maximum Length
     severity: info
-    given: $.components.schemas.*.properties[?(@.type == 'string')]
+    given:
+      - $.components.schemas.*.properties[?(@.type == 'string')]
+      - $.definitions.*.properties[?(@.type == 'string')]
     then:
       field: maxLength
       function: truthy
@@ -7977,7 +8808,9 @@ openapi:
     description: "Schema properties that are of the string type have the min length applied defining the shape of the property."
     message: Schema String Properties MUST Have Minimum Length
     severity: info
-    given: $.components.schemas.*.properties[?(@.type == 'string')]
+    given:
+      - $.components.schemas.*.properties[?(@.type == 'string')]
+      - $.definitions.*.properties[?(@.type == 'string')]
     then:
       field: minLength
       function: truthy
@@ -8126,6 +8959,8 @@ openapi:
       - experience:security
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'schema-write-operation-require-security' (Schema Write Operation Require Security). Requirement: Your API should be protected by a `security` rule either at global or operation level. Operations should be protected specially when they are tied to non-idempotent HTTP methods like `POST`, `PUT`, `PATCH` and `DELETE`. This is done with one or more non-empty `security` rules. Security rules are defined in the `securityScheme` section. An example of a security rule applied at global level. ``` security: - BasicAuth: [] paths: /books: {} /users: {} securitySchemes: BasicAuth: scheme: http type: basic ``` An example of a security rule applied at operation level, which eventually overrides the global one ``` paths: /books: post: security: - AccessToken: [] securitySchemes: BasicAuth: scheme: http type: basic AccessToken: scheme: http type: bearer bearerFormat: JWT ```. To fix: Adjust `security` so it conforms to the schema this rule requires. Guidance: The following non-idempotent operation is not protected by a `security` rule. This rule is evaluated at the JSONPath `$.paths.*[?(@property.match(/^(post|put|patch|delete)/))]` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
   security-bearer-scheme-require-bearer-format:
+    formats:
+      - oas3
     title: "Security Bearer Scheme Require Bearer Format"
     reference: "https://spotlight-rules.com/spec/rules/openapi/security-bearer-scheme-require-bearer-format/"
     source: spotlight
@@ -8166,6 +9001,8 @@ openapi:
       - experience:documentation
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'security-jwt-scheme-require-description' (Security JWT Scheme Require Description). Requirement: Json Web Tokens RFC7519 is a compact, URL-safe means of representing claims to be transferred between two parties. JWT can be enclosed in encrypted or signed tokens like JWS and JWE. The [JOSE IANA registry](https://www.iana.org/assignments/jose/jose.xhtml) provides algorithms information. RFC8725 describes common pitfalls in the JWx specifications and in their implementations, such as: - the ability to ignore algorithms, eg. `{\"alg\": \"none\"}`; - using insecure algorithms like `RSASSA-PKCS1-v1_5` eg. `{\"alg\": \"RS256\"}`. An API using JWT should explicit in the `description` that the implementation conforms to RFC8725. ``` components: securitySchemes: JWTBearer: type: http scheme: bearer bearerFormat: JWT description: |- A bearer token in the format of a JWS and conformato to the specifications included in RFC8725. ```. To fix: Ensure `description` is present and non-empty at each matching location. Also: Ensure `description` matches the regular expression `.*RFC8725.*`; rewrite any value that does not. Guidance: JWT usage should be detailed in `description`. This rule is evaluated at the JSONPath `$.[securitySchemes][?(@.bearerFormat==\"jwt\" || @.bearerFormat==\"JWT\")]` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
   security-no-http-basic-auth:
+    formats:
+      - oas3
     title: "Security No HTTP Basic Auth"
     reference: "https://spotlight-rules.com/spec/rules/openapi/security-no-http-basic-auth/"
     source: compiled
@@ -8185,6 +9022,28 @@ openapi:
       - spec:components
       - experience:security
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'security-no-http-basic-auth' (Security No HTTP Basic Auth). Requirement: Consider a more secure alternative to HTTP Basic. To fix: Ensure `scheme` does NOT match the regular expression `basic`; rename or rewrite any value that does. This rule is evaluated at the JSONPath `$.components.securitySchemes[*]` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
+  security-no-http-basic-auth-oas2:
+    formats:
+      - oas2
+    title: "Security No HTTP Basic Auth (Swagger 2.0)"
+    reference: "https://spotlight-rules.com/spec/rules/openapi/security-no-http-basic-auth/"
+    source: compiled
+    description: "Consider a more secure alternative to HTTP Basic. In Swagger 2.0 basic auth is declared as a security definition with `type: basic`."
+    message: HTTP Basic is an insecure way to pass credentials around, use an alternative.
+    severity: info
+    given: $.securityDefinitions[*]
+    then:
+      field: type
+      function: pattern
+      functionOptions:
+        notMatch: ^basic$
+    tags:
+      - owasp:api2
+      - format:openapi
+      - spec:security
+      - spec:components
+      - experience:security
+    prompt: "You are editing a Swagger 2.0 document to satisfy the Spotlight API governance rule 'security-no-http-basic-auth-oas2' (Security No HTTP Basic Auth (Swagger 2.0)). Requirement: consider a more secure alternative to HTTP Basic. To fix: Ensure no security definition uses `type: basic`. This rule is evaluated at the JSONPath `$.securityDefinitions[*]`. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid Swagger 2.0. Return only the complete corrected document, with no commentary."
   security-oauth-disallow-insecure-flows:
     title: "Security OAuth Disallow Insecure Flows"
     reference: "https://spotlight-rules.com/spec/rules/openapi/security-oauth-disallow-insecure-flows/"
@@ -8230,6 +9089,8 @@ openapi:
       - experience:security
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'security-oauth-endpoints-require-https' (Security OAuth Endpoints Require HTTPS). Requirement: OAuth2 endpoints must use `https://`. To fix: Ensure `value` matches the regular expression `^https://`; rewrite any value that does not. This rule is evaluated at the JSONPath `$.[securitySchemes][?(@.type==\"oauth2\")][*].[?(@property.match(/url$/i))]` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
   security-oauth-flow-require-scopes:
+    formats:
+      - oas3
     title: "Security OAuth Flow Require Scopes"
     reference: "https://spotlight-rules.com/spec/rules/openapi/security-oauth-flow-require-scopes/"
     source: spotlight
@@ -8251,6 +9112,30 @@ openapi:
       - experience:governance
       - owasp:api5
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'security-oauth-flow-require-scopes' (Security OAuth Flow Require Scopes). Requirement: OAuth2 flows should define scopes so authorization is granular and least-privilege rather than all-or-nothing. To fix: Adjust `scopes` so it conforms to the schema this rule requires. This rule is evaluated at the JSONPath `$.components.securitySchemes[?(@ && @.type == 'oauth2')].flows[*]` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
+  security-oauth-flow-require-scopes-oas2:
+    formats:
+      - oas2
+    title: "Security OAuth Flow Require Scopes (Swagger 2.0)"
+    reference: "https://spotlight-rules.com/spec/rules/openapi/security-oauth-flow-require-scopes/"
+    source: spotlight
+    description: "OAuth2 security definitions should define scopes so authorization is granular and least-privilege rather than all-or-nothing. In Swagger 2.0 scopes are declared directly on the oauth2 security definition."
+    message: "OAuth2 security definition should define at least one scope."
+    given: $.securityDefinitions[?(@ && @.type == 'oauth2')]
+    severity: info
+    then:
+      field: scopes
+      function: schema
+      functionOptions:
+        schema:
+          type: object
+          minProperties: 1
+    tags:
+      - format:openapi
+      - spec:components
+      - experience:security
+      - experience:governance
+      - owasp:api5
+    prompt: "You are editing a Swagger 2.0 document to satisfy the Spotlight API governance rule 'security-oauth-flow-require-scopes-oas2' (Security OAuth Flow Require Scopes (Swagger 2.0)). Requirement: OAuth2 security definitions should define scopes. To fix: Ensure each oauth2 security definition declares at least one entry under `scopes`. This rule is evaluated at the JSONPath `$.securityDefinitions[?(@ && @.type == 'oauth2')]`. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid Swagger 2.0. Return only the complete corrected document, with no commentary."
   security-oauth-scheme-require-description:
     title: "Security OAuth Scheme Require Description"
     reference: "https://spotlight-rules.com/spec/rules/openapi/security-oauth-scheme-require-description/"
@@ -8275,6 +9160,8 @@ openapi:
       - experience:documentation
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'security-oauth-scheme-require-description' (Security OAuth Scheme Require Description). Requirement: Json Web Tokens RFC7519 is a compact, URL-safe means of representing claims to be transferred between two parties. JWT can be enclosed in encrypted or signed tokens like JWS and JWE. The [JOSE IANA registry](https://www.iana.org/assignments/jose/jose.xhtml) provides algorithms information. RFC8725 describes common pitfalls in the JWx specifications and in their implementations, such as: - the ability to ignore algorithms, eg. `{\"alg\": \"none\"}`; - using insecure algorithms like `RSASSA-PKCS1-v1_5` eg. `{\"alg\": \"RS256\"}`. An API using JWT should explicit in the `description` that the implementation conforms to RFC8725. ``` components: securitySchemes: JWTBearer: type: http scheme: bearer bearerFormat: JWT description: |- A bearer token in the format of a JWS and conformato to the specifications included in RFC8725. ```. To fix: Ensure `description` is present and non-empty at each matching location. Also: Ensure `description` matches the regular expression `.*RFC8725.*`; rewrite any value that does not. Guidance: JWT usage should be detailed in `description`. This rule is evaluated at the JSONPath `$.[securitySchemes][?(@.type==\"oauth2\")]` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
   security-openidconnect-require-url:
+    formats:
+      - oas3
     title: "Security OpenID-Connect Require URL"
     reference: "https://spotlight-rules.com/spec/rules/openapi/security-openidconnect-require-url/"
     source: spotlight
@@ -8292,6 +9179,8 @@ openapi:
       - owasp:api2
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'security-openidconnect-require-url' (Security OpenID-Connect Require URL). Requirement: OpenID Connect security schemes should declare an openIdConnectUrl pointing at the discovery document so clients can configure themselves. To fix: Ensure `openIdConnectUrl` is present and non-empty at each matching location. This rule is evaluated at the JSONPath `$.components.securitySchemes[?(@ && @.type == 'openIdConnect')]` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
   security-openidconnect-url-https:
+    formats:
+      - oas3
     title: "Security OpenID-Connect URL HTTPS"
     reference: "https://spotlight-rules.com/spec/rules/openapi/security-openidconnect-url-https/"
     source: spotlight
@@ -8310,6 +9199,8 @@ openapi:
       - owasp:api8
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'security-openidconnect-url-https' (Security OpenID-Connect URL HTTPS). Requirement: The OpenID Connect discovery URL (openIdConnectUrl) should use https so token/identity configuration is not retrieved over an insecure channel. To fix: Ensure the targeted value matches the regular expression `^https://`; rewrite any value that does not. This rule is evaluated at the JSONPath `$.components.securitySchemes[?(@ && @.type == 'openIdConnect')].openIdConnectUrl` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
   security-owasp-api2-auth-insecure-schemes:
+    formats:
+      - oas3
     title: "Security OWASP API2 Auth Insecure Schemes"
     reference: "https://spotlight-rules.com/spec/rules/openapi/security-owasp-api2-auth-insecure-schemes/"
     source: spotlight
@@ -8328,6 +9219,8 @@ openapi:
       - owasp:api2
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'security-owasp-api2-auth-insecure-schemes' (Security OWASP API2 Auth Insecure Schemes). Requirement: HTTP auth schemes should not use insecure mechanisms such as negotiate or oauth1 (OWASP API2). Prefer bearer with a vetted token. To fix: Ensure the targeted value does NOT match the regular expression `^(negotiate|oauth)$`; rename or rewrite any value that does. This rule is evaluated at the JSONPath `$.components.securitySchemes[?(@ && @.type == 'http')].scheme` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
   security-owasp-api2-no-api-keys-in-url:
+    formats:
+      - oas3
     title: "Security OWASP API2 No API Keys In URL"
     reference: "https://spotlight-rules.com/spec/rules/openapi/security-owasp-api2-no-api-keys-in-url/"
     source: spotlight
@@ -8346,6 +9239,28 @@ openapi:
       - experience:security
       - owasp:api2
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'security-owasp-api2-no-api-keys-in-url' (Security OWASP API2 No API Keys In URL). Requirement: API key security schemes should be sent in a header or cookie, never in the query string or path (OWASP API2 — credentials leak into logs and history). To fix: Set `in` to one of the allowed values: header, cookie. This rule is evaluated at the JSONPath `$.components.securitySchemes[?(@ && @.type == 'apiKey')]` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
+  security-owasp-api2-no-api-keys-in-url-oas2:
+    formats:
+      - oas2
+    title: "Security OWASP API2 No API Keys In URL (Swagger 2.0)"
+    reference: "https://spotlight-rules.com/spec/rules/openapi/security-owasp-api2-no-api-keys-in-url/"
+    source: spotlight
+    description: "API key security definitions should be sent in a header, never in the query string (OWASP API2 — credentials leak into logs and history). Swagger 2.0 apiKey definitions may only be `in: header` or `in: query`."
+    message: "apiKey definition should be in a header, not the query string."
+    given: $.securityDefinitions[?(@ && @.type == 'apiKey')]
+    severity: info
+    then:
+      field: in
+      function: enumeration
+      functionOptions:
+        values:
+          - header
+    tags:
+      - format:openapi
+      - spec:components
+      - experience:security
+      - owasp:api2
+    prompt: "You are editing a Swagger 2.0 document to satisfy the Spotlight API governance rule 'security-owasp-api2-no-api-keys-in-url-oas2' (Security OWASP API2 No API Keys In URL (Swagger 2.0)). Requirement: apiKey security definitions should be sent in a header, not the query string. To fix: Set `in` to `header`. This rule is evaluated at the JSONPath `$.securityDefinitions[?(@ && @.type == 'apiKey')]`. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid Swagger 2.0. Return only the complete corrected document, with no commentary."
   security-require-root:
     title: "Security Require Root"
     reference: "https://spotlight-rules.com/spec/rules/openapi/security-require-root/"
@@ -8389,6 +9304,8 @@ openapi:
       - experience:governance
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'security-require-root-scheme' (Security Require Root Scheme). Requirement: Security field MUST be present at the root of the spec with at least one item (ie. HTTPBearer, Token, APIKey, etc.). To fix: Adjust `security` so it conforms to the schema this rule requires. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
   security-scheme-require-description:
+    formats:
+      - oas3
     title: "Security Scheme Require Description"
     reference: "https://spotlight-rules.com/spec/rules/openapi/security-scheme-require-description/"
     source: spotlight
@@ -8405,6 +9322,25 @@ openapi:
       - experience:security
       - owasp:api2
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'security-scheme-require-description' (Security Scheme Require Description). Requirement: Every security scheme should declare a description so consumers know how to authenticate (which token, where to get it, what scopes). To fix: Ensure `description` is present and non-empty at each matching location. This rule is evaluated at the JSONPath `$.components.securitySchemes[*]` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
+  security-scheme-require-description-oas2:
+    formats:
+      - oas2
+    title: "Security Scheme Require Description (Swagger 2.0)"
+    reference: "https://spotlight-rules.com/spec/rules/openapi/security-scheme-require-description/"
+    source: spotlight
+    description: "Every security definition should declare a description so consumers know how to authenticate (which token, where to get it, what scopes)."
+    message: "Security definition should have a description."
+    given: $.securityDefinitions[*]
+    severity: info
+    then:
+      field: description
+      function: truthy
+    tags:
+      - format:openapi
+      - spec:components
+      - experience:security
+      - owasp:api2
+    prompt: "You are editing a Swagger 2.0 document to satisfy the Spotlight API governance rule 'security-scheme-require-description-oas2' (Security Scheme Require Description (Swagger 2.0)). Requirement: every security definition should declare a description. To fix: Ensure `description` is present and non-empty at each security definition. This rule is evaluated at the JSONPath `$.securityDefinitions[*]`. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid Swagger 2.0. Return only the complete corrected document, with no commentary."
   server-must-not-specify-port:
     title: "Server Must Not Specify Port"
     reference: "https://spotlight-rules.com/spec/rules/openapi/server-must-not-specify-port/"
@@ -8467,6 +9403,8 @@ openapi:
       - experience:consistency
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'server-on-approved-domain' (Server On Approved Domain). Requirement: APIs SHOULD be accessible under api.spscommerce.com. To fix: Ensure the targeted value matches the regular expression `api.spscommerce.com|api.sps-internal.com|localhost`; rewrite any value that does not. This rule is evaluated at the JSONPath `$.servers..url` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
   server-require-description:
+    formats:
+      - oas3
     title: "Server Require Description"
     reference: "https://spotlight-rules.com/spec/rules/openapi/server-require-description/"
     source: compiled
@@ -8506,6 +9444,8 @@ openapi:
       - experience:security
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'server-require-https' (Server Require HTTPS). Requirement: ALL requests MUST go through `https` protocol only. To fix: Ensure the targeted value matches the regular expression `/^https:/`; rewrite any value that does not. This rule is evaluated at the JSONPath `$.servers..url` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
   server-require-https-2:
+    formats:
+      - oas3
     title: "Server Require HTTPS 2"
     reference: "https://spotlight-rules.com/spec/rules/openapi/server-require-https-2/"
     source: compiled
@@ -8527,7 +9467,38 @@ openapi:
       - spec:paths
       - experience:security
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'server-require-https-2' (Server Require HTTPS 2). Requirement: Servers must use https to ensure the origin of the responses and protect the integrity and the confidentiality of the communication. You can use `http://` only on sandboxes environment. Use `x-sandbox: true` to skip this kind of check. To fix: Ensure `url` matches the regular expression `^https://.*`; rewrite any value that does not. Guidance: Non-sandbox url . Add `x-sandbox: true` to skip this check on a specific server. This rule is evaluated at the JSONPath `$.servers[?(@[\"x-sandbox\"] != true)] | $.paths..servers[?(@[\"x-sandbox\"] != true)]` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
+  server-require-https-2-oas2:
+    formats:
+      - oas2
+    title: "Server Require HTTPS 2 (Swagger 2.0)"
+    reference: "https://spotlight-rules.com/spec/rules/openapi/server-require-https-2/"
+    source: compiled
+    description: "The API must be served over https to protect the integrity and confidentiality of the communication. In Swagger 2.0 the transport is declared in the root `schemes` array — it should contain `https` and must not contain `http`."
+    message: "API `schemes` should use https and not http."
+    severity: info
+    given: $
+    then:
+      field: schemes
+      function: schema
+      functionOptions:
+        dialect: draft7
+        schema:
+          type: array
+          contains:
+            const: https
+          not:
+            contains:
+              const: http
+    tags:
+      - owasp:api8
+      - format:openapi
+      - spec:servers
+      - spec:paths
+      - experience:security
+    prompt: "You are editing a Swagger 2.0 document to satisfy the Spotlight API governance rule 'server-require-https-2-oas2' (Server Require HTTPS 2 (Swagger 2.0)). Requirement: The API must be served over https. To fix: Ensure the root `schemes` array contains `https` and does not contain `http`. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid Swagger 2.0. Return only the complete corrected document, with no commentary."
   server-url-include-version:
+    formats:
+      - oas3
     title: "Server URL Include Version"
     reference: "https://spotlight-rules.com/spec/rules/openapi/server-url-include-version/"
     source: compiled
@@ -8543,7 +9514,29 @@ openapi:
       - experience:versioning
       - experience:consistency
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'server-url-include-version' (Server URL Include Version). Requirement: API URLs versions should meet the Trimble API Standards. This rule is evaluated at the JSONPath `$.servers` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
+  server-url-include-version-oas2:
+    formats:
+      - oas2
+    title: "Server URL Include Version (Swagger 2.0)"
+    reference: "https://spotlight-rules.com/spec/rules/openapi/server-url-include-version/"
+    source: compiled
+    description: "The API base path should include a version segment (e.g. /v1) so consumers can pin to a major version."
+    message: "Base path should include a version (e.g. /v1)."
+    severity: info
+    given: $.basePath
+    then:
+      function: pattern
+      functionOptions:
+        match: /v\d+
+    tags:
+      - format:openapi
+      - spec:servers
+      - experience:versioning
+      - experience:consistency
+    prompt: "You are editing a Swagger 2.0 document to satisfy the Spotlight API governance rule 'server-url-include-version-oas2' (Server URL Include Version (Swagger 2.0)). Requirement: The API base path should include a version segment such as /v1. To fix: Ensure `basePath` matches the regular expression `/v\\d+`. This rule is evaluated at the JSONPath `$.basePath`. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid Swagger 2.0. Return only the complete corrected document, with no commentary."
   server-url-meet-standards:
+    formats:
+      - oas3
     title: "Server URL Meet Standards"
     reference: "https://spotlight-rules.com/spec/rules/openapi/server-url-meet-standards/"
     source: compiled
@@ -8580,6 +9573,8 @@ openapi:
       - experience:consistency
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'server-url-must-be-lowercase' (Server URL Must Be Lowercase). Requirement: Server URL SHOULD BE lowercase. To fix: Ensure the targeted value matches the regular expression `^[^A-Z]*$`; rewrite any value that does not. This rule is evaluated at the JSONPath `$.servers..url` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
   server-url-require-https:
+    formats:
+      - oas3
     title: "Server URL Require HTTPS"
     reference: "https://spotlight-rules.com/spec/rules/openapi/server-url-require-https/"
     source: compiled
@@ -8598,6 +9593,34 @@ openapi:
       - spec:servers
       - experience:security
     prompt: "You are editing an OpenAPI document to satisfy the Spotlight API governance rule 'server-url-require-https' (Server URL Require HTTPS). Requirement: API server URLs should use HTTPS to ensure encrypted communication between clients and servers, protecting sensitive data in transit. To fix: Ensure `url` matches the regular expression `^https://`; rewrite any value that does not. This rule is evaluated at the JSONPath `$.servers[*]` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
+  server-url-require-https-oas2:
+    formats:
+      - oas2
+    title: "Server URL Require HTTPS (Swagger 2.0)"
+    reference: "https://spotlight-rules.com/spec/rules/openapi/server-url-require-https/"
+    source: compiled
+    description: "The API should be served over HTTPS to ensure encrypted communication between clients and servers. In Swagger 2.0 declare `https` in the root `schemes` array and avoid `http`."
+    message: Transport MUST Use HTTPS
+    severity: info
+    given: $
+    then:
+      field: schemes
+      function: schema
+      functionOptions:
+        dialect: draft7
+        schema:
+          type: array
+          contains:
+            const: https
+          not:
+            contains:
+              const: http
+    tags:
+      - owasp:api8
+      - format:openapi
+      - spec:servers
+      - experience:security
+    prompt: "You are editing a Swagger 2.0 document to satisfy the Spotlight API governance rule 'server-url-require-https-oas2' (Server URL Require HTTPS (Swagger 2.0)). Requirement: The API should be served over HTTPS. To fix: Ensure the root `schemes` array contains `https` and does not contain `http`. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid Swagger 2.0. Return only the complete corrected document, with no commentary."
   tag-description:
     title: "Tag Description"
     reference: "https://spotlight-rules.com/spec/rules/openapi/tag-description/"
