@@ -2,16 +2,23 @@
 
 A [Model Context Protocol](https://modelcontextprotocol.io) server that lets **any AI
 client** lint your API artifacts against a best-of-breed **API governance ruleset** —
-so an agent can check your OpenAPI, AsyncAPI, Arazzo, APIs.json, JSON Schema, MCP, and
-more, conversationally, and tell you what to fix.
+so an agent can check your OpenAPI (**3.x _and_ Swagger 2.0**), AsyncAPI, Arazzo,
+APIs.json, JSON Schema, MCP, and more, conversationally, and tell you what to fix.
 
 Powered by **[Spectral](https://github.com/stoplightio/spectral)**. It runs the same
-engine and the same compiled ruleset as the [API Commons **API
+engine and the same compiled ruleset (`rules/all-rules.yaml`) as the [API Commons **API
 Validator**](https://validator.apicommons.org) — the browser tool — here server-side
 over stdio. The ruleset is compiled from public Spectral rulesets and the
-[API Evangelist](https://apievangelist.com) governance rules: **733 rules across 12
-artifact formats**. Every rule ships at `info` to educate; raise individual rules to
-`warn`/`error` with a custom ruleset for what you choose to enforce.
+[API Evangelist](https://apievangelist.com) governance rules: **769 rules across 12
+artifact formats**, of which the **`openapi` group is 462 rules**. Every rule ships at
+`info` to educate; raise individual rules to `warn`/`error` with a custom ruleset for
+what you choose to enforce.
+
+**Swagger 2.0 at parity with OpenAPI 3.x.** The `openapi` catalog governs
+`swagger: "2.0"` documents exactly as it governs `openapi: 3.x` — Spectral
+auto-detects each document's format and runs the matching rules (twins and
+format-gating mean nothing false-positives across versions). The server maps the
+`swagger` format synonym to `openapi`, so a client can say either.
 
 ## Tools
 
@@ -29,8 +36,9 @@ artifact formats**. Every rule ships at `info` to educate; raise individual rule
 `openapi` · `asyncapi` · `arazzo` · `apis-json` · `jsonschema` · `json-structure` ·
 `json-ld` · `mcp` · `plans` · `rate-limits` · `finops` · `agent-skill`
 
-The `openapi` and `asyncapi` rulesets also extend the recommended Spectral engine rules;
-every other format is linted entirely by its curated rules.
+The `openapi` format covers **both Swagger 2.0 and OpenAPI 3.x** (say `swagger` or
+`openapi`). The `openapi` and `asyncapi` rulesets also extend the recommended Spectral
+engine rules; every other format is linted entirely by its curated rules.
 
 ## Use it
 
