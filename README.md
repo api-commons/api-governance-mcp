@@ -80,3 +80,5 @@ Validator: the same Spectral governance, exposed to any agent over MCP. See them
 A project of [API Evangelist](https://apievangelist.com), maintained openly under
 [API Commons](https://apicommons.org). The tooling is open and free to run yourself;
 API Evangelist offers the expert governance services around it. Apache-2.0.
+
+**Governance guidance** — the human *why* behind this tool: [MCP](https://guidance.apievangelist.com/store/mcp/) at guidance.apievangelist.com.
