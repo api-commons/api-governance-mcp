@@ -64,16 +64,16 @@ Add to your client's MCP server config (e.g. Claude Desktop `claude_desktop_conf
 
 Then ask: *"Lint this OpenAPI for governance issues and tell me what to fix."*
 
-## Part of the API Commons tools
+## Part of API Commons
 
-Browser-first, backend-free tools for the APIs you produce and consume — **[API
-Discovery](https://discovery.apicommons.org)**, **[API
-Documentation](https://documentation.apicommons.org)**, **[API
-Validator](https://validator.apicommons.org)**, **[API
-Reusability](https://reusability.apicommons.org)**, and **[MCP
-Install](https://install.apicommons.org)**. This is the **AI surface** of the API
-Validator: the same Spectral governance, exposed to any agent over MCP. See them all at
-[apicommons.org/tools](https://apicommons.org/tools/).
+An open, browser-first tool from **[API Commons](https://apicommons.org)** — free, no backend, your data stays in your browser. Browse the full set at **[apicommons.org/tools](https://apicommons.org/tools/)**. This is the **AI surface** of the API Validator: the same Spectral governance, exposed to any agent over MCP.
+
+**Related tools**
+- [API Validator](https://validator.apicommons.org) — lint OpenAPI/AsyncAPI/Arazzo/JSON Schema in-browser (the browser twin of this server)
+- [Ruleset Commons](https://rulesets.apicommons.org) — adopt a provenanced ruleset by reference
+- [Spectral OWASP Ruleset](https://github.com/api-commons/spectral-owasp-ruleset) — OWASP API Security layer
+- [Agent Rule Export](https://agents.apicommons.org) — ruleset → agent-native artifacts
+- [Governance Coverage](https://coverage.apicommons.org) — how much of your API your rules actually check
 
 ---
 
