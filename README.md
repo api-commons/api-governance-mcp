@@ -82,3 +82,10 @@ A project of [API Evangelist](https://apievangelist.com), maintained openly unde
 API Evangelist offers the expert governance services around it. Apache-2.0.
 
 **Governance guidance** — the human *why* behind this tool: [MCP](https://guidance.apievangelist.com/store/mcp/) at guidance.apievangelist.com.
+
+## License
+
+**[Apache-2.0](LICENSE).**
+
+API Commons licenses **code** under Apache-2.0 and **artifacts** — schemas, rulesets,
+examples and API descriptions — under CC BY-NC-SA 4.0.
