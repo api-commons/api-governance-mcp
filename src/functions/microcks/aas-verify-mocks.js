@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import __sc from '@stoplight/spectral-core';
+import __sc from '@openlint/openlint-core';
 const { createRulesetFunction } = __sc;
 
 export default createRulesetFunction(

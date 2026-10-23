@@ -2,7 +2,7 @@
 // namespaced name a rule uses in `then.function` (e.g. "trimble:valid-url-checker").
 // Built-in Spectral functions (truthy, pattern, schema, …) are spread in first so a
 // rule can name either. Mirrors the validator's compiled function map.
-import * as builtins from '@stoplight/spectral-functions';
+import * as builtins from '@openlint/openlint-functions';
 
 import baloiseAssertHttpCodesForOperation from './functions/baloise/assert-http-codes-for-operation.js';
 import baloiseValidateTracing from './functions/baloise/validate-tracing.js';

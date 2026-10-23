@@ -5,7 +5,7 @@ client** lint your API artifacts against a best-of-breed **API governance rulese
 so an agent can check your OpenAPI (**3.x _and_ Swagger 2.0**), AsyncAPI, Arazzo,
 APIs.json, JSON Schema, MCP, and more, conversationally, and tell you what to fix.
 
-Powered by **[Spectral](https://github.com/stoplightio/spectral)**. It runs the same
+Powered by **[OpenLint](https://openlint.org)**, the community fork of Spectral. It runs the same
 engine and the same compiled ruleset (`rules/all-rules.yaml`) as the [API Commons **API
 Validator**](https://validator.apicommons.org) — the browser tool — here server-side
 over stdio. The ruleset is compiled from public Spectral rulesets and the
@@ -15,7 +15,7 @@ artifact formats**, of which the **`openapi` group is 462 rules**. Every rule sh
 what you choose to enforce.
 
 **Swagger 2.0 at parity with OpenAPI 3.x.** The `openapi` catalog governs
-`swagger: "2.0"` documents exactly as it governs `openapi: 3.x` — Spectral
+`swagger: "2.0"` documents exactly as it governs `openapi: 3.x` — the engine
 auto-detects each document's format and runs the matching rules (twins and
 format-gating mean nothing false-positives across versions). The server maps the
 `swagger` format synonym to `openapi`, so a client can say either.
@@ -28,7 +28,7 @@ format-gating mean nothing false-positives across versions). The server maps the
 | `list_rulesets` | The artifact formats it governs and, per format, the rules it applies |
 | `list_formats` | The artifact formats the ruleset can lint |
 | `describe_rule` | Look a finding's `code` up → title, description, severity, tags, target path, and a remediation prompt |
-| `validate_ruleset` | Structurally validate a custom Spectral ruleset before you lint with it |
+| `validate_ruleset` | Structurally validate a custom ruleset (OpenLint or Spectral format) before you lint with it |
 | `request_review` | Get a ready-to-send email to engage [API Evangelist](https://apievangelist.com/services/) for expert governance services |
 
 ### Formats
@@ -37,8 +37,8 @@ format-gating mean nothing false-positives across versions). The server maps the
 `json-ld` · `mcp` · `plans` · `rate-limits` · `finops` · `agent-skill`
 
 The `openapi` format covers **both Swagger 2.0 and OpenAPI 3.x** (say `swagger` or
-`openapi`). The `openapi` and `asyncapi` rulesets also extend the recommended Spectral
-engine rules; every other format is linted entirely by its curated rules.
+`openapi`). The `openapi` and `asyncapi` rulesets also extend the recommended built-in
+engine rules (`spectral:oas`, `spectral:asyncapi`); every other format is linted entirely by its curated rules.
 
 ## Use it
 

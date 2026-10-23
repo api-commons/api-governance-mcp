@@ -32,11 +32,11 @@
   "homepage": "https://apicommons.org/tools/",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.12.0",
-    "@stoplight/spectral-core": "^1.19.0",
-    "@stoplight/spectral-formats": "^1.7.0",
-    "@stoplight/spectral-functions": "^1.9.0",
-    "@stoplight/spectral-parsers": "^1.0.4",
-    "@stoplight/spectral-rulesets": "^1.21.0",
+    "@openlint/openlint-core": "^0.0.1",
+    "@openlint/openlint-formats": "^0.0.1",
+    "@openlint/openlint-functions": "^0.0.1",
+    "@openlint/openlint-parsers": "^1.0.0",
+    "@openlint/openlint-rulesets": "^0.0.1",
     "yaml": "^2.6.1",
     "zod": "^3.23.8"
   }

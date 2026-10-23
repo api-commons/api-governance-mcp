@@ -9,10 +9,10 @@ import { dirname, join } from 'node:path';
 import { parse as parseYaml } from 'yaml';
 // spectral-core / -parsers / -formats are CommonJS; Node's ESM interop only surfaces
 // a subset of names, so take the classes off the default (namespace) export.
-import spectralCore from '@stoplight/spectral-core';
-import Parsers from '@stoplight/spectral-parsers';
-import fmts from '@stoplight/spectral-formats';
-import { oas, asyncapi } from '@stoplight/spectral-rulesets';
+import spectralCore from '@openlint/openlint-core';
+import Parsers from '@openlint/openlint-parsers';
+import fmts from '@openlint/openlint-formats';
+import { oas, asyncapi } from '@openlint/openlint-rulesets';
 import { FN_MAP } from './functions.mjs';
 
 const { Spectral, Document, Ruleset } = spectralCore;
