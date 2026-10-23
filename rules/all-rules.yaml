@@ -1654,7 +1654,7 @@ openapi:
           type: array
           contains:
             type: object
-            required: [name, in]
+            required: [ name, in ]
             properties:
               name:
                 pattern: '^filter'
@@ -1684,7 +1684,7 @@ openapi:
           type: array
           contains:
             type: object
-            required: [name, in]
+            required: [ name, in ]
             properties:
               name:
                 pattern: '^(sort|order)'
@@ -1714,7 +1714,7 @@ openapi:
           type: array
           contains:
             type: object
-            required: [name, in]
+            required: [ name, in ]
             properties:
               name:
                 pattern: '^fields'
@@ -1884,7 +1884,7 @@ openapi:
           type: array
           contains:
             type: object
-            required: [name]
+            required: [ name ]
             properties:
               name:
                 const: If-Modified-Since
@@ -1911,7 +1911,7 @@ openapi:
           type: array
           contains:
             type: object
-            required: [name]
+            required: [ name ]
             properties:
               name:
                 const: If-None-Match
@@ -2040,7 +2040,7 @@ openapi:
           type: array
           contains:
             type: object
-            required: [name, in]
+            required: [ name, in ]
             properties:
               name:
                 const: Idempotency-Key
@@ -2754,7 +2754,7 @@ openapi:
           type: array
           contains:
             type: object
-            required: [name]
+            required: [ name ]
             properties:
               name:
                 const: If-Match
@@ -2781,7 +2781,7 @@ openapi:
           type: array
           contains:
             type: object
-            required: [name]
+            required: [ name ]
             properties:
               name:
                 const: If-Unmodified-Since
@@ -3246,7 +3246,7 @@ openapi:
           properties:
             type:
               not:
-                enum: [integer, number]
+                enum: [ integer, number ]
     tags:
       - format:openapi
       - spec:parameters
@@ -4821,7 +4821,7 @@ openapi:
           type: array
           contains:
             type: object
-            required: [name, in]
+            required: [ name, in ]
             properties:
               name:
                 const: Accept-Encoding
@@ -4851,7 +4851,7 @@ openapi:
           type: array
           contains:
             type: object
-            required: [name, in]
+            required: [ name, in ]
             properties:
               name:
                 const: Accept-Language
@@ -4880,7 +4880,7 @@ openapi:
           type: array
           contains:
             type: object
-            required: [name, in]
+            required: [ name, in ]
             properties:
               name:
                 const: baggage
@@ -4910,7 +4910,7 @@ openapi:
           type: array
           contains:
             type: object
-            required: [name, in]
+            required: [ name, in ]
             properties:
               name:
                 pattern: '^([Xx]-)?([Cc]orrelation|[Rr]equest)-[Ii][Dd]$'
@@ -5052,7 +5052,7 @@ openapi:
           type: array
           contains:
             type: object
-            required: [name, in]
+            required: [ name, in ]
             properties:
               name:
                 const: tracestate
@@ -5411,15 +5411,15 @@ openapi:
         schema:
           not:
             anyOf:
-              - required: [const]
+              - required: [ const ]
                 properties:
                   const:
                     const: '*'
-              - required: [default]
+              - required: [ default ]
                 properties:
                   default:
                     const: '*'
-              - required: [example]
+              - required: [ example ]
                 properties:
                   example:
                     const: '*'
@@ -5749,8 +5749,8 @@ openapi:
     title: "Response Error Match Problem Schema"
     reference: "https://apicommons.org/rules/#openapi-response-error-match-problem-schema"
     source: compiled
-    description: "WARN: This rule is under implementation and just provides an hint. Error management is a key enabler of a resilient API ecosystem. Enforcing a consistent schema for errors between different APIs, enables client to properly implement an error management strategy, with positive impacts for users. This rule inspects the schema returned by an error response and verifies whether it contains the main properties defined in RFC7807: `status`, `title` and `detail`. An example of a valid payload is ``` { \"title\": \"Not Found\", \"status\": 404, \"detail\": \"Book does not exist; id: 123\" } ``` See recommendation RAC_REST_NAME_007."
-    message: Your schema doesn't seem to match RFC7807. Are you sure it is ok? {{path}}
+    description: "WARN: This rule is under implementation and just provides an hint. Error management is a key enabler of a resilient API ecosystem. Enforcing a consistent schema for errors between different APIs, enables client to properly implement an error management strategy, with positive impacts for users. This rule inspects the schema returned by an error response and verifies whether it contains the main properties defined in RFC 9457: `status`, `title` and `detail`. An example of a valid payload is ``` { \"title\": \"Not Found\", \"status\": 404, \"detail\": \"Book does not exist; id: 123\" } ``` See recommendation RAC_REST_NAME_007."
+    message: Your schema doesn't seem to match RFC 9457. Are you sure it is ok? {{path}}
     severity: info
     given: $.paths.[*].responses[?(@property.match(/^(4|5|default)/))][[schema]]
     then:
@@ -5774,7 +5774,7 @@ openapi:
       - spec:schemas
       - experience:error-handling
       - experience:consistency
-    prompt: "You are editing an OpenAPI document to satisfy the API governance rule 'response-error-match-problem-schema' (Response Error Match Problem Schema). Requirement: WARN: This rule is under implementation and just provides an hint. Error management is a key enabler of a resilient API ecosystem. Enforcing a consistent schema for errors between different APIs, enables client to properly implement an error management strategy, with positive impacts for users. This rule inspects the schema returned by an error response and verifies whether it contains the main properties defined in RFC7807: `status`, `title` and `detail`. An example of a valid payload is ``` { \"title\": \"Not Found\", \"status\": 404, \"detail\": \"Book does not exist; id: 123\" } ``` See recommendation RAC_REST_NAME_007. To fix: Adjust the targeted value so it conforms to the schema this rule requires. This rule is evaluated at the JSONPath `$.paths.[*].responses[?(@property.match(/^(4|5|default)/))][[schema]]` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
+    prompt: "You are editing an OpenAPI document to satisfy the API governance rule 'response-error-match-problem-schema' (Response Error Match Problem Schema). Requirement: WARN: This rule is under implementation and just provides an hint. Error management is a key enabler of a resilient API ecosystem. Enforcing a consistent schema for errors between different APIs, enables client to properly implement an error management strategy, with positive impacts for users. This rule inspects the schema returned by an error response and verifies whether it contains the main properties defined in RFC 9457: `status`, `title` and `detail`. An example of a valid payload is ``` { \"title\": \"Not Found\", \"status\": 404, \"detail\": \"Book does not exist; id: 123\" } ``` See recommendation RAC_REST_NAME_007. To fix: Adjust the targeted value so it conforms to the schema this rule requires. This rule is evaluated at the JSONPath `$.paths.[*].responses[?(@property.match(/^(4|5|default)/))][[schema]]` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
   response-error-require-description:
     title: "Response Error Require Description"
     reference: "https://apicommons.org/rules/#openapi-response-error-require-description"
@@ -5796,8 +5796,8 @@ openapi:
     title: "Response Error Schema Problem Property Names"
     reference: "https://apicommons.org/rules/#openapi-response-error-schema-problem-property-names"
     source: compiled
-    description: "WARN: This rule is under implementation and just provides an hint. Error management is a key enabler of a resilient API ecosystem. Enforcing a consistent schema for errors between different APIs, enables client to properly implement an error management strategy, with positive impacts for users. Errors should return RFC7807 objects. Instead, this schema seems to use non standard properties such as: `message`, `msg` and `code`. An error of the following form ``` { \"msg\": \"Book with id: 123 does not exist.\", \"code\": 6063 } ``` can be expressed in RFC7807 with ``` { \"detail\": \"Book with id: 123 does not exist.\", \"type\": \"https://api.example/v1/errors/6063\", \"status\": 404, \"title\": \"Not Found\" } ``` Returning an URI in `type`, instead of an opaque `code` can help the client in better identifying the error; moreover the URI though it should not be dereferenced automatically, can return an actual resource providing guidance in addressing the issue. See recommendation RAC_REST_NAME_007."
-    message: Error response doesn't seem to match RFC7807. Are you sure it is ok? {{path}}
+    description: "WARN: This rule is under implementation and just provides an hint. Error management is a key enabler of a resilient API ecosystem. Enforcing a consistent schema for errors between different APIs, enables client to properly implement an error management strategy, with positive impacts for users. Errors should return RFC 9457 objects. Instead, this schema seems to use non standard properties such as: `message`, `msg` and `code`. An error of the following form ``` { \"msg\": \"Book with id: 123 does not exist.\", \"code\": 6063 } ``` can be expressed in RFC 9457 with ``` { \"detail\": \"Book with id: 123 does not exist.\", \"type\": \"https://api.example/v1/errors/6063\", \"status\": 404, \"title\": \"Not Found\" } ``` Returning an URI in `type`, instead of an opaque `code` can help the client in better identifying the error; moreover the URI though it should not be dereferenced automatically, can return an actual resource providing guidance in addressing the issue. See recommendation RAC_REST_NAME_007."
+    message: Error response doesn't seem to match RFC 9457. Are you sure it is ok? {{path}}
     severity: info
     given: $.[responses][?(@property.match(/^(4|5|default)/))][[schema]][properties].*~
     then:
@@ -5813,7 +5813,7 @@ openapi:
       - spec:schemas
       - experience:error-handling
       - experience:consistency
-    prompt: "You are editing an OpenAPI document to satisfy the API governance rule 'response-error-schema-problem-property-names' (Response Error Schema Problem Property Names). Requirement: WARN: This rule is under implementation and just provides an hint. Error management is a key enabler of a resilient API ecosystem. Enforcing a consistent schema for errors between different APIs, enables client to properly implement an error management strategy, with positive impacts for users. Errors should return RFC7807 objects. Instead, this schema seems to use non standard properties such as: `message`, `msg` and `code`. An error of the following form ``` { \"msg\": \"Book with id: 123 does not exist.\", \"code\": 6063 } ``` can be expressed in RFC7807 with ``` { \"detail\": \"Book with id: 123 does not exist.\", \"type\": \"https://api.example/v1/errors/6063\", \"status\": 404, \"title\": \"Not Found\" } ``` Returning an URI in `type`, instead of an opaque `code` can help the client in better identifying the error; moreover the URI though it should not be dereferenced automatically, can return an actual resource providing guidance in addressing the issue. See recommendation RAC_REST_NAME_007. To fix: Ensure `@key` does NOT match the regular expression `message|code|msg`; rename or rewrite any value that does. This rule is evaluated at the JSONPath `$.[responses][?(@property.match(/^(4|5|default)/))][[schema]][properties].*~` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
+    prompt: "You are editing an OpenAPI document to satisfy the API governance rule 'response-error-schema-problem-property-names' (Response Error Schema Problem Property Names). Requirement: WARN: This rule is under implementation and just provides an hint. Error management is a key enabler of a resilient API ecosystem. Enforcing a consistent schema for errors between different APIs, enables client to properly implement an error management strategy, with positive impacts for users. Errors should return RFC 9457 objects. Instead, this schema seems to use non standard properties such as: `message`, `msg` and `code`. An error of the following form ``` { \"msg\": \"Book with id: 123 does not exist.\", \"code\": 6063 } ``` can be expressed in RFC 9457 with ``` { \"detail\": \"Book with id: 123 does not exist.\", \"type\": \"https://api.example/v1/errors/6063\", \"status\": 404, \"title\": \"Not Found\" } ``` Returning an URI in `type`, instead of an opaque `code` can help the client in better identifying the error; moreover the URI though it should not be dereferenced automatically, can return an actual resource providing guidance in addressing the issue. See recommendation RAC_REST_NAME_007. To fix: Ensure `@key` does NOT match the regular expression `message|code|msg`; rename or rewrite any value that does. This rule is evaluated at the JSONPath `$.[responses][?(@property.match(/^(4|5|default)/))][[schema]][properties].*~` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
   response-error-standard-payload:
     title: "Response Error Standard Payload"
     reference: "https://apicommons.org/rules/#openapi-response-error-standard-payload"
@@ -5835,7 +5835,7 @@ openapi:
     title: "Response Error Use Problem JSON"
     reference: "https://apicommons.org/rules/#openapi-response-error-use-problem-json"
     source: default
-    description: "All 4xx and 5xx error responses MUST use the `application/problem+json` media type (RFC 7807)."
+    description: "All 4xx and 5xx error responses MUST use the `application/problem+json` media type (RFC 9457, which obsoleted RFC 7807)."
     message: "Error response documents MUST use the application/problem+json media type: {{error}}"
     severity: info
     given: $.paths..responses[?( @property >= 400 && @property < 600)].content[*]~
@@ -5853,13 +5853,13 @@ openapi:
       - spec:media-types
       - experience:consistency
       - experience:error-handling
-    prompt: "You are editing an OpenAPI document to satisfy the API governance rule 'response-error-use-problem-json' (Response Error Use Problem JSON). Requirement: All 4xx and 5xx error responses MUST use the `application/problem+json` media type (RFC 7807). To fix: Set the targeted value to one of the allowed values: application/problem+json. This rule is evaluated at the JSONPath `$.paths..responses[?( @property >= 400 && @property < 600)].content[*]~` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
+    prompt: "You are editing an OpenAPI document to satisfy the API governance rule 'response-error-use-problem-json' (Response Error Use Problem JSON). Requirement: All 4xx and 5xx error responses MUST use the `application/problem+json` media type (RFC 9457, which obsoleted RFC 7807). To fix: Set the targeted value to one of the allowed values: application/problem+json. This rule is evaluated at the JSONPath `$.paths..responses[?( @property >= 400 && @property < 600)].content[*]~` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
   response-error-use-problem-type:
     title: "Response Error Use Problem Type"
     reference: "https://apicommons.org/rules/#openapi-response-error-use-problem-type"
     source: compiled
-    description: "Error management is a key enabler of a resilient API ecosystem. Enforcing a consistent schema for errors between different APIs, enables client to properly implement an error management strategy, with positive impacts for users. Error responses should return one of the media-type defined in RFC7807: - `application/problem+json` - `application/problem+xml` An example of a valid response: ``` responses: \"503\": content: application/problem+json: schema: ... ```."
-    message: Error responses should support RFC7807 in {{path}}.
+    description: "Error management is a key enabler of a resilient API ecosystem. Enforcing a consistent schema for errors between different APIs, enables client to properly implement an error management strategy, with positive impacts for users. Error responses should return one of the media-type defined in RFC 9457: - `application/problem+json` - `application/problem+xml` An example of a valid response: ``` responses: \"503\": content: application/problem+json: schema: ... ```."
+    message: Error responses should support RFC 9457 in {{path}}.
     severity: info
     given: $.paths.[*].responses[?(@property.match(/^(4|5|default)/))].content.*~
     then:
@@ -5877,15 +5877,15 @@ openapi:
       - spec:media-types
       - experience:error-handling
       - experience:consistency
-    prompt: "You are editing an OpenAPI document to satisfy the API governance rule 'response-error-use-problem-type' (Response Error Use Problem Type). Requirement: Error management is a key enabler of a resilient API ecosystem. Enforcing a consistent schema for errors between different APIs, enables client to properly implement an error management strategy, with positive impacts for users. Error responses should return one of the media-type defined in RFC7807: - `application/problem+json` - `application/problem+xml` An example of a valid response: ``` responses: \"503\": content: application/problem+json: schema: ... ```. To fix: Set the targeted value to one of the allowed values: application/problem+xml, application/problem+json. This rule is evaluated at the JSONPath `$.paths.[*].responses[?(@property.match(/^(4|5|default)/))].content.*~` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
+    prompt: "You are editing an OpenAPI document to satisfy the API governance rule 'response-error-use-problem-type' (Response Error Use Problem Type). Requirement: Error management is a key enabler of a resilient API ecosystem. Enforcing a consistent schema for errors between different APIs, enables client to properly implement an error management strategy, with positive impacts for users. Error responses should return one of the media-type defined in RFC 9457: - `application/problem+json` - `application/problem+xml` An example of a valid response: ``` responses: \"503\": content: application/problem+json: schema: ... ```. To fix: Set the targeted value to one of the allowed values: application/problem+xml, application/problem+json. This rule is evaluated at the JSONPath `$.paths.[*].responses[?(@property.match(/^(4|5|default)/))].content.*~` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
   response-error-use-problem-type-2:
     formats:
       - oas3
     title: "Response Error Use Problem Type 2"
     reference: "https://apicommons.org/rules/#openapi-response-error-use-problem-type-2"
     source: compiled
-    description: "Every error response SHOULD support RFC 7807."
-    message: "Every error response SHOULD support RFC 7807."
+    description: "Every error response SHOULD support RFC 9457."
+    message: "Every error response SHOULD support RFC 9457."
     severity: info
     given: $.paths...responses[?(@property.match(/^(4|5)/))].content.*~
     then:
@@ -5901,7 +5901,7 @@ openapi:
       - spec:media-types
       - experience:error-handling
       - experience:consistency
-    prompt: "You are editing an OpenAPI document to satisfy the API governance rule 'response-error-use-problem-type-2' (Response Error Use Problem Type 2). Requirement: Every error response SHOULD support RFC 7807. To fix: Set the targeted value to one of the allowed values: application/problem+xml, application/problem+json. This rule is evaluated at the JSONPath `$.paths...responses[?(@property.match(/^(4|5)/))].content.*~` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
+    prompt: "You are editing an OpenAPI document to satisfy the API governance rule 'response-error-use-problem-type-2' (Response Error Use Problem Type 2). Requirement: Every error response SHOULD support RFC 9457. To fix: Set the targeted value to one of the allowed values: application/problem+xml, application/problem+json. This rule is evaluated at the JSONPath `$.paths...responses[?(@property.match(/^(4|5)/))].content.*~` — inspect every location it matches and correct only what violates the rule. Make the smallest change that satisfies the rule, leave all unrelated content, key order, comments, and formatting unchanged, and keep the document valid OpenAPI. Return only the complete corrected document, with no commentary."
   response-get-cache-control:
     title: "Response Get Cache Control"
     reference: "https://apicommons.org/rules/#openapi-response-get-cache-control"
@@ -6529,8 +6529,8 @@ openapi:
         schema:
           type: object
           anyOf:
-            - required: ['400']
-            - required: ['422']
+            - required: [ '400' ]
+            - required: [ '422' ]
     tags:
       - format:openapi
       - spec:responses
@@ -6933,12 +6933,12 @@ openapi:
         schema:
           type: object
           anyOf:
-            - required: [Request-Id]
-            - required: [X-Request-Id]
-            - required: [X-Request-ID]
-            - required: [Correlation-Id]
-            - required: [X-Correlation-Id]
-            - required: [X-Correlation-ID]
+            - required: [ Request-Id ]
+            - required: [ X-Request-Id ]
+            - required: [ X-Request-ID ]
+            - required: [ Correlation-Id ]
+            - required: [ X-Correlation-Id ]
+            - required: [ X-Correlation-ID ]
     tags:
       - format:openapi
       - spec:responses
@@ -9234,7 +9234,7 @@ openapi:
       field: in
       function: enumeration
       functionOptions:
-        values: [header, cookie]
+        values: [ header, cookie ]
     tags:
       - format:openapi
       - spec:components
@@ -9804,14 +9804,14 @@ openapi:
       functionOptions:
         schema:
           type: object
-          required: [action-class, consequence, subject, scope]
+          required: [ action-class, consequence, subject, scope ]
           properties:
-            action-class: { enum: [connected, delegated, acting] }
-            consequence: { enum: [read, write, physical, safety-critical] }
-            subject: { enum: [required, optional, none] }
+            action-class: { enum: [ connected, delegated, acting ] }
+            consequence: { enum: [ read, write, physical, safety-critical ] }
+            subject: { enum: [ required, optional, none ] }
             scope: { type: array, minItems: 1, items: { type: string } }
             audience: { type: string }
-            audit: { enum: [required, none] }
+            audit: { enum: [ required, none ] }
             token:
               type: object
               properties:
@@ -9822,8 +9822,8 @@ openapi:
             escalation:
               type: object
               properties:
-                human-in-the-loop: { enum: [required, conditional, none] }
-                triggers: { type: array, items: { enum: [abnormal, high-value, safety] } }
+                human-in-the-loop: { enum: [ required, conditional, none ] }
+                triggers: { type: array, items: { enum: [ abnormal, high-value, safety ] } }
                 approver: { type: string }
     tags:
       - format:openapi
@@ -9848,24 +9848,24 @@ openapi:
           allOf:
             - if: { properties: { consequence: { const: write } } }
               then:
-                required: [audience, audit, token]
+                required: [ audience, audit, token ]
                 properties:
                   audit: { const: required }
-                  token: { required: [max-ttl], properties: { max-ttl: { maximum: 900 } } }
+                  token: { required: [ max-ttl ], properties: { max-ttl: { maximum: 900 } } }
             - if: { properties: { consequence: { const: physical } } }
               then:
-                required: [audience, audit, subject, token]
+                required: [ audience, audit, subject, token ]
                 properties:
                   subject: { const: required }
                   audit: { const: required }
-                  token: { required: [max-ttl], properties: { max-ttl: { maximum: 300 } } }
+                  token: { required: [ max-ttl ], properties: { max-ttl: { maximum: 300 } } }
             - if: { properties: { consequence: { const: safety-critical } } }
               then:
-                required: [audience, audit, subject, token]
+                required: [ audience, audit, subject, token ]
                 properties:
                   subject: { const: required }
                   audit: { const: required }
-                  token: { required: [max-ttl], properties: { max-ttl: { maximum: 120 } } }
+                  token: { required: [ max-ttl ], properties: { max-ttl: { maximum: 120 } } }
     tags:
       - format:openapi
       - spec:operations
@@ -9886,13 +9886,13 @@ openapi:
       functionOptions:
         schema:
           type: object
-          if: { properties: { consequence: { const: safety-critical } }, required: [consequence] }
+          if: { properties: { consequence: { const: safety-critical } }, required: [ consequence ] }
           then:
-            required: [escalation]
+            required: [ escalation ]
             properties:
               escalation:
                 type: object
-                required: [human-in-the-loop]
+                required: [ human-in-the-loop ]
                 properties:
                   human-in-the-loop: { const: required }
     tags:
@@ -9915,13 +9915,13 @@ openapi:
       functionOptions:
         schema:
           type: object
-          if: { properties: { action-class: { const: acting } }, required: [action-class] }
+          if: { properties: { action-class: { const: acting } }, required: [ action-class ] }
           then:
-            required: [escalation]
+            required: [ escalation ]
             properties:
               escalation:
                 type: object
-                required: [human-in-the-loop]
+                required: [ human-in-the-loop ]
     tags:
       - format:openapi
       - spec:operations
@@ -9942,13 +9942,13 @@ openapi:
       functionOptions:
         schema:
           type: object
-          if: { properties: { subject: { const: required } }, required: [subject] }
+          if: { properties: { subject: { const: required } }, required: [ subject ] }
           then:
-            required: [token]
+            required: [ token ]
             properties:
               token:
                 type: object
-                required: [exchange]
+                required: [ exchange ]
                 properties:
                   exchange: { const: true }
     tags:
@@ -9972,14 +9972,14 @@ openapi:
         schema:
           type: object
           if:
-            required: [x-agentic-access]
+            required: [ x-agentic-access ]
             properties:
               x-agentic-access:
-                required: [action-class]
+                required: [ action-class ]
                 properties:
-                  action-class: { enum: [acting, delegated] }
+                  action-class: { enum: [ acting, delegated ] }
           then:
-            required: [security]
+            required: [ security ]
             properties:
               security: { type: array, minItems: 1 }
     tags:
@@ -14105,9 +14105,9 @@ arazzo:
         schema:
           type: object
           anyOf:
-            - required: [operationId]
-            - required: [operationPath]
-            - required: [workflowId]
+            - required: [ operationId ]
+            - required: [ operationPath ]
+            - required: [ workflowId ]
     tags:
       - format:arazzo
       - spec:workflows
@@ -14572,7 +14572,7 @@ json-ld:
       function: schema
       functionOptions:
         schema:
-          type: [string, object, array]
+          type: [ string, object, array ]
     tags:
       - format:json-ld
       - spec:document
@@ -14591,7 +14591,7 @@ json-ld:
       function: schema
       functionOptions:
         schema:
-          type: [string, array]
+          type: [ string, array ]
     tags:
       - format:json-ld
       - spec:document
@@ -14961,7 +14961,7 @@ plans:
       function: schema
       functionOptions:
         schema:
-          type: [number, integer]
+          type: [ number, integer ]
           minimum: 0
     tags:
       - format:plans
@@ -15223,7 +15223,7 @@ rate-limits:
       functionOptions:
         schema:
           type: string
-          enum: [ip, user, api-key, client, global]
+          enum: [ ip, user, api-key, client, global ]
     tags:
       - format:rate-limits
       - spec:limits
@@ -15260,7 +15260,7 @@ finops:
       function: schema
       functionOptions:
         schema:
-          type: [number, integer]
+          type: [ number, integer ]
           minimum: 0
     tags:
       - format:finops
@@ -15313,7 +15313,7 @@ finops:
       function: schema
       functionOptions:
         schema:
-          type: [number, integer]
+          type: [ number, integer ]
           minimum: 0
     tags:
       - format:finops
