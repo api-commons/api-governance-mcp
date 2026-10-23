@@ -2,7 +2,7 @@
 // API Commons API Validator runs in the browser, here server-side over Node. It
 // loads the compiled data-form ruleset (rules/all-rules.yaml, grouped by artifact
 // format), resolves `spectral:*` extends to the built-in ruleset objects, wires
-// custom functions, and lints a document. Nothing here is Spotlight-specific.
+// custom functions, and lints a document. Nothing here is specific to one linter build.
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
